@@ -1,0 +1,13 @@
+.main_table {
+    border-collapse: collapse;
+}
+
+.main_table, .main_table_data, .main_table_header {
+    border: 1px solid;
+}
+
+.main_table_data {
+    padding-left: 1%;
+    padding-right: 1%;
+    text-align: center;
+}
