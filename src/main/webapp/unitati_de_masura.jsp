@@ -17,6 +17,7 @@
             <tr class="um_table_header_row">
                 <th class="um_table_header">Unitate de masura</th>
                 <th class="um_table_header">Unitate de masura abreviere</th>
+                <th>Delete</th>
             </tr>
             <%
                 try {
@@ -28,7 +29,17 @@
                     while(result.next()){
                         String um = result.getString("unitate_de_masura");
                         String ab_um = result.getString("unitate_de_masura_short");
-                        out.println("<tr class=\"um_table_data_row\"><td class=\"um_table_data\">" + um + "</td><td class=\"um_table_data\">" + ab_um + "</td>");
+
+                        out.println("<tr class=\"um_table_data_row\">" +
+                                        "<form method=\"POST\" action=\"umDeleteServlet\">" +
+                                            "<td class=\"um_table_data\">" + um + "</td>" +
+                                            "<td class=\"um_table_data\">" + ab_um + "</td>" +
+                                            "<td class=\"um_table_data\">" +
+                                                "<input type=\"submit\" value=\"Delete\"/>" +
+                                                "<input type=\"hidden\" value=\"" + um +"\" name=\"um_to_delete\"/>" +
+                                            "</td>" +
+                                        "</form>" +
+                                    "</tr>");
                     }
 
                     connection.close();
