@@ -7,6 +7,7 @@
 <head>
     <title>Unitati de masura</title>
     <link href="styles/unitati_de_masura.css" rel="stylesheet" type="text/css">
+    <script src="scripts/um.js"></script>
 </head>
 <body>
 <h1>Unitati de masura</h1>
@@ -39,18 +40,20 @@
         </table>
     </div>
     <div class="add_container">
-        <form action="add_um" method="POST">
+        <form action="add_um" method="POST" name="add_form">
             <label>
                 Unitate de masura:
-                <input type="text" name="um">
+                <input type="text" name="um" id="um">
             </label>
             <br/><br/>
             <label>
                 Abreviare:
-                <input type="text" name="ab_um" >
+                <input type="text" name="ab_um" id="ab_um">
             </label>
             <br/><br/>
-            <input type="submit" value="Submit"/>
+            <input type="button" value="Submit" onclick="validateAndSubmit()"/>
+            <br>
+            <span id="output"></span>
         </form>
     </div>
 </div>
