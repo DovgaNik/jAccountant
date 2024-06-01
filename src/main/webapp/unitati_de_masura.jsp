@@ -1,5 +1,5 @@
 <%@ page import="java.sql.Connection" %>
-<%@ page import="dev.dovhan.jaccountant.ConnectionProvider" %>
+<%@ page import="dev.dovhan.jaccountant.utilities.ConnectionProvider" %>
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page contentType="text/html;charset=UTF-8"%>

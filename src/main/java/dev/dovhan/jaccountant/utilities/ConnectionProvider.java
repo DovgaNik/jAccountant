@@ -1,4 +1,4 @@
-package dev.dovhan.jaccountant;
+package dev.dovhan.jaccountant.utilities;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -7,9 +7,9 @@ import java.sql.SQLException;
 
 public abstract class ConnectionProvider {
 
-    public static Connection getConnection() throws IOException, ClassNotFoundException, SQLException {
+    public static Connection getConnection() throws ClassNotFoundException, SQLException, IOException {
         Credentials credentials = new Credentials();
-        String url = "jdbc:mysql://localhost:3306/jaccountant";
+        String url = Credentials.dbURL;
         String username = Credentials.dbUsername;
         String password = Credentials.dbPassword;
 

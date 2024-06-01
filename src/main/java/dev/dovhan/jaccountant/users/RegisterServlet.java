@@ -1,4 +1,4 @@
-package dev.dovhan.jaccountant;
+package dev.dovhan.jaccountant.users;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 @WebServlet(name = "registerServlet", value = "/register-servlet")

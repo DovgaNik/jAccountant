@@ -1,4 +1,6 @@
-package dev.dovhan.jaccountant;
+package dev.dovhan.jaccountant.users;
+
+import dev.dovhan.jaccountant.utilities.ConnectionProvider;
 
 import java.io.IOException;
 import java.math.BigInteger;

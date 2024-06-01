@@ -1,4 +1,4 @@
-package dev.dovhan.jaccountant;
+package dev.dovhan.jaccountant.utilities;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,9 +8,12 @@ import java.util.List;
 public class Credentials {
         public static String dbUsername;
         public static String dbPassword;
+        public static String dbURL;
+
         public Credentials() throws IOException {
             List<String> lines = Files.readAllLines(Path.of("D:", "credentials"));
             dbUsername = lines.get(0);
             dbPassword = lines.get(1);
+            dbURL = lines.get(2);
         }
 }
