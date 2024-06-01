@@ -41,6 +41,7 @@
             </tr>
         </table>
         <a href="unitati_de_masura.jsp">Unitati de masura</a>
+        <a href="seller.jsp">Furnizori</a>
     </div>
 
 </body>

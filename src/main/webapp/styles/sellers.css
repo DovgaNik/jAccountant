@@ -1,0 +1,26 @@
+.seller_table {
+    border-collapse: collapse;
+}
+
+.seller_table, .seller_table_data, .seller_table_header {
+    border: 1px solid;
+}
+
+.seller_table_data {
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.table_container {
+    width: 70%;
+}
+
+.add_container {
+    width: 29%;
+    position: fixed;
+    margin-left: 70%;
+}
+
+.flex_container {
+    display: flex;
+}

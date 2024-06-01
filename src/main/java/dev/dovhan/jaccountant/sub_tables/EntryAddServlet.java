@@ -12,13 +12,11 @@ public class EntryAddServlet extends HttpServlet {
     protected void addEntry(HttpServletRequest request, HttpServletResponse response, String nameOfTable, String nameOfColumn1, String nameOfColumn2, String parameter1, String parameter2, String redirect) {
         try {
             Connection connection = ConnectionProvider.getConnection();
-            String sql = "insert into ? (?, ?) values (?, ?)";
+            String sql = "INSERT INTO " + nameOfTable + " (" + nameOfColumn1 + ", " + nameOfColumn2 + ") VALUES (?, ?)";
             PreparedStatement preparedStmt = connection.prepareStatement(sql);
-            preparedStmt.setString (1, request.getParameter(nameOfTable));
-            preparedStmt.setString (2, request.getParameter(nameOfColumn1));
-            preparedStmt.setString (3, request.getParameter(nameOfColumn2));
-            preparedStmt.setString (4, request.getParameter(parameter1));
-            preparedStmt.setString (5, request.getParameter(parameter2));
+            preparedStmt.setString(1, request.getParameter(parameter1));
+            preparedStmt.setString(2, request.getParameter(parameter2));
+            System.out.println(preparedStmt.toString());
             preparedStmt.execute();
             connection.close();
             response.sendRedirect(redirect);
