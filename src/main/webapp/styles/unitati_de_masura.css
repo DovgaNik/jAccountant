@@ -1,14 +1,14 @@
 .um_table {
     border-collapse: collapse;
+    table-layout: auto;
 }
 
 .um_table, .um_table_data, .um_table_header {
     border: 1px solid;
 }
 
-.um_table_data {
-    padding-left: 1%;
-    padding-right: 1%;
+.um_table_data > * {
+    width: 100%;
 }
 
 .table_container {

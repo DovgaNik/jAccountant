@@ -35,7 +35,7 @@
                                             "<td class=\"seller_table_data\">" + seller + "</td>" +
                                             "<td class=\"seller_table_data\">" + uniqueCode + "</td>" +
                                             "<td class=\"seller_table_data\">" +
-                                                "<input type=\"submit\" value=\"Delete\"/>" +
+                                                "<input type=\"submit\" value=\"Delete\", class=\"seller_delete\"/>" +
                                                 "<input type=\"hidden\" value=\"" + seller +"\" name=\"seller_to_delete\"/>" +
                                             "</td>" +
                                         "</form>" +
