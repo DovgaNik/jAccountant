@@ -46,6 +46,7 @@
         <div class="sidebar">
             <a href="unitati_de_masura.jsp">Unitati de masura</a>
             <a href="seller.jsp">Furnizori</a>
+            <a href="product.jsp">Produse</a>
         </div>
     </div>
 </body>
