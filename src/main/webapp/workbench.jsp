@@ -119,7 +119,7 @@
 
 	<div class="sidebar">
 		<h1>Add entry</h1>
-		<form method="POST" action="!!!TODO" name="add_form">
+		<form method="POST" action="addInvoice" name="add_form">
 			<label for="date">Date of transaction: </label>
 			<input type="date" name="date" id="date"/> <br>
 

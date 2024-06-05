@@ -55,7 +55,37 @@ public class EntryAddServlet extends HttpServlet {
         return preparedStmt;
     }
 
-    private List<String> buildArrayOfParameters(HttpServletRequest request, String[] parameters) {
+    protected PreparedStatement buildStatement(Connection connection, HttpServletRequest request, String tableName, String[] columns, List<String> values) throws Exception {
+
+        if (columns.length != values.size()) {
+            throw new Exception("Amount of columns and values doesn't match");
+        }
+        StringBuilder sql = new StringBuilder("INSERT INTO " + tableName + " (");
+
+        for (int i = 0; i < columns.length - 1; i++) {
+            sql.append(columns[i]).append(", ");
+        }
+
+        sql.append(columns[columns.length - 1]).append(") VALUES (");
+
+        for (int i = 0; i < values.size() - 1; i++) {
+            sql.append("?, ");
+        }
+
+        sql.append(" ?)");
+
+        PreparedStatement preparedStmt = connection.prepareStatement(sql.toString());
+
+        for(int i = 0; i < values.size(); i++){
+
+            preparedStmt.setString(i + 1, values.get(i));
+
+        }
+
+        return preparedStmt;
+    }
+
+    protected List<String> buildArrayOfParameters(HttpServletRequest request, String[] parameters) {
         List<String> values = new ArrayList<>();
 
         for (String parameter : parameters) {

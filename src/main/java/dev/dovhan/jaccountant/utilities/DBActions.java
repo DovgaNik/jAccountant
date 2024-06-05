@@ -21,6 +21,19 @@ public abstract class DBActions {
 		}
 	}
 
+	public static int getIDByFK (Connection connection, String table, String column, String entry) {
+		try {
+			String sql = "SELECT * FROM " + table + " WHERE "+ column + " = " + "\"" + entry + "\"";
+			PreparedStatement preparedStmt = connection.prepareStatement(sql);
+			ResultSet result = preparedStmt.executeQuery();
+			result.next();
+			return result.getInt("id");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+
 	public static HashMap<Integer, String> getDbAsAMap(String table, Connection connection, String columnName) {
 		HashMap<Integer, String> tableMap = new HashMap<>();
 		try {
