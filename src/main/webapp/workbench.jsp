@@ -86,7 +86,7 @@
 
 						out.println(
 								"<tr class=\"main_table_data_row\">" +
-										"<form method=\"POST\" action=\"TODO\">" +
+										"<form method=\"POST\" action=\"deleteInvoice\">" +
 											"<td class=\"main_table_data\">" + data + "</td>" +
 											"<td class=\"main_table_data\">" + furnizor_name + "</td>" +
 											"<td class=\"main_table_data\">" + produs_name + "</td>" +
