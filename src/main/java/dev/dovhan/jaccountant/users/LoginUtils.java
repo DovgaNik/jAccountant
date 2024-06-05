@@ -12,9 +12,12 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public abstract class LoginUtils {
+
+    public static final String ALGORITHM = "SHA-512";
+
     private static String generateHash(String password) {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            MessageDigest md = MessageDigest.getInstance(ALGORITHM);
             byte[] messageDigest = md.digest(password.getBytes());
             BigInteger no = new BigInteger(1, messageDigest);
             String hashtext = no.toString(16);

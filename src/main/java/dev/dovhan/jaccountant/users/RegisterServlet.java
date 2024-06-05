@@ -19,9 +19,7 @@ public class RegisterServlet extends HttpServlet {
         out.println(request.getParameter("password") + "<br/>");
         try {
             LoginUtils.register(request.getParameter("username"), request.getParameter("password"));
-        } catch (SQLException e) {
-            out.println(e.getMessage());
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             out.println(e.getMessage());
         }
     }
