@@ -1,11 +1,26 @@
-<%@ page import="java.sql.Connection" %>
 <%@ page import="dev.dovhan.jaccountant.utilities.ConnectionProvider" %>
-<%@ page import="java.sql.PreparedStatement" %>
-<%@ page import="java.sql.ResultSet" %>
-<%@ page import="java.sql.Date" %>
 <%@ page import="java.math.BigDecimal" %>
-<%@ page import="dev.dovhan.jaccountant.utilities.GetFK" %>
+<%@ page import="dev.dovhan.jaccountant.utilities.DBActions" %>
+<%@ page import="java.sql.*" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%!Connection connection;%>
+<%!HashMap<Integer, String> furnizor_table;%>
+<%!HashMap<Integer, String> produs_table;%>
+<%!HashMap<Integer, String> um_table;%>
+
+<%
+	try {
+		connection = ConnectionProvider.getConnection();
+		furnizor_table = DBActions.getDbAsAMap("furnizor", connection, "furnizor");
+		produs_table = DBActions.getDbAsAMap("produs", connection, "produs");
+		um_table = DBActions.getDbAsAMap("unitat_de_masura", connection, "unitate_de_masura");
+	} catch (Exception e) {
+		throw new RuntimeException(e);
+	}
+%>
 
 <html>
 <head>
@@ -29,7 +44,7 @@
 				<th class="main_table_header">Data</th>
 				<th class="main_table_header">Furnizor</th>
 				<th class="main_table_header">Produs</th>
-				<th class="main_table_header">CAEN</th>
+				<th class="main_table_header">caen</th>
 				<th class="main_table_header">Cantitate</th>
 				<th class="main_table_header">UM</th>
 				<th class="main_table_header">Cheltuieli</th>
@@ -54,7 +69,7 @@
 						Date data = result.getDate(2);
 						int furnizor = result.getInt(3); //FK
 						int produs = result.getInt(4); //FK
-						int caen = result.getInt(5);
+						String caen = result.getString(5);
 						int cantitate = result.getInt(6);
 						int unitate_de_masura = result.getInt(7); //FK
 						BigDecimal cheltuieli = result.getBigDecimal(8);
@@ -65,9 +80,9 @@
 						BigDecimal impozabil = result.getBigDecimal(13);
 						BigDecimal impozit = result.getBigDecimal(14);
 
-						String furnizor_name = GetFK.getFKStringByID(furnizor, "furnizor", "furnizor", connection);
-						String produs_name = GetFK.getFKStringByID(produs, "produs", "produs", connection);
-						String um_name = GetFK.getFKStringByID(unitate_de_masura, "unitat_de_masura", "unitate_de_masura_short", connection);
+						String furnizor_name = furnizor_table.get(furnizor).toString();
+						String produs_name = produs_table.get(produs).toString();
+						String um_name = um_table.get(unitate_de_masura).toString();
 
 						out.println(
 								"<tr class=\"main_table_data_row\">" +
@@ -103,7 +118,67 @@
 	</div>
 
 	<div class="sidebar">
+		<h1>Add entry</h1>
+		<form method="POST" action="!!!TODO">
+			<label for="date">Date of transaction: </label>
+			<input type="date" name="date" id="date"/> <br>
 
+			<label for="seller">Furnizor: </label>
+			<select name="seller" id="seller">
+				<%
+					for (String i : furnizor_table.values()){
+						out.println("<option value=\"" + i + "\">" + i + "</option>");
+					}
+
+				%>
+			</select> <br>
+
+			<label for="product">Produs: </label>
+			<select name="product" id="product">
+				<%
+					for (String i : produs_table.values()){
+						out.println("<option value=\"" + i + "\">" + i + "</option>");
+					}
+				%>
+			</select> <br>
+
+			<label for="caen">caen: </label>
+			<input type="text" name="caen" id="caen"/> <br>
+
+			<label for="quantity">Cantitate: </label>
+			<input type="text" name="quantity" id="quantity"/> <br>
+
+			<label for="um">Unitat de masura: </label>
+			<select name="um" id="um">
+				<%
+					for (String i : um_table.values()){
+						out.println("<option value=\"" + i + "\">" + i + "</option>");
+					}
+				%>
+			</select> <br>
+
+			<label for="cheltuieli">Cheltuieli: </label>
+			<input type="text" name="cheltuieli" id="cheltuieli"/> <br>
+
+			<label for="venituri">Venituri: </label>
+			<input type="text" name="venituri" id="venituri"/> <br>
+
+			<label for="note">Note: </label>
+			<input type="text" name="note" id="note"/> <br>
+
+			<label for="deductibil">Deductibil: </label>
+			<input type="text" name="deductibil" id="deductibil"/> <br>
+
+			<label for="profit">Profit: </label>
+			<input type="text" name="profit" id="profit"/> <br>
+
+			<label for="impozabil">Impozabil: </label>
+			<input type="text" name="impozabil" id="impozabil"/> <br>
+
+			<label for="impozit">Impozit: </label>
+			<input type="text" name="impozit" id="impozit"/> <br>
+
+		</form>
 	</div>
 </div>
 </body>
