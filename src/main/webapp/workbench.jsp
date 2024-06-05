@@ -2,7 +2,6 @@
 <%@ page import="java.math.BigDecimal" %>
 <%@ page import="dev.dovhan.jaccountant.utilities.DBActions" %>
 <%@ page import="java.sql.*" %>
-<%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -26,6 +25,7 @@
 <head>
 	<title>Workbench</title>
 	<link href="styles/workbench.css" rel="stylesheet" type="text/css">
+	<script src="scripts/vanzare.js"></script>
 </head>
 <body>
 <div class="header">
@@ -119,7 +119,7 @@
 
 	<div class="sidebar">
 		<h1>Add entry</h1>
-		<form method="POST" action="!!!TODO">
+		<form method="POST" action="!!!TODO" name="add_form">
 			<label for="date">Date of transaction: </label>
 			<input type="date" name="date" id="date"/> <br>
 
@@ -143,10 +143,10 @@
 			</select> <br>
 
 			<label for="caen">caen: </label>
-			<input type="text" name="caen" id="caen"/> <br>
+			<input type="number" name="caen" id="caen"/> <br>
 
 			<label for="quantity">Cantitate: </label>
-			<input type="text" name="quantity" id="quantity"/> <br>
+			<input type="number" name="quantity" id="quantity"/> <br>
 
 			<label for="um">Unitat de masura: </label>
 			<select name="um" id="um">
@@ -158,26 +158,29 @@
 			</select> <br>
 
 			<label for="cheltuieli">Cheltuieli: </label>
-			<input type="text" name="cheltuieli" id="cheltuieli"/> <br>
+			<input type="number" name="cheltuieli" id="cheltuieli"/> <br>
 
 			<label for="venituri">Venituri: </label>
-			<input type="text" name="venituri" id="venituri"/> <br>
+			<input type="number" name="venituri" id="venituri"/> <br>
 
 			<label for="note">Note: </label>
-			<input type="text" name="note" id="note"/> <br>
+			<input type="number" name="note" id="note"/> <br>
 
 			<label for="deductibil">Deductibil: </label>
-			<input type="text" name="deductibil" id="deductibil"/> <br>
+			<input type="number" name="deductibil" id="deductibil"/> <br>
 
 			<label for="profit">Profit: </label>
-			<input type="text" name="profit" id="profit"/> <br>
+			<input type="number" name="profit" id="profit"/> <br>
 
 			<label for="impozabil">Impozabil: </label>
-			<input type="text" name="impozabil" id="impozabil"/> <br>
+			<input type="number" name="impozabil" id="impozabil"/> <br>
 
 			<label for="impozit">Impozit: </label>
-			<input type="text" name="impozit" id="impozit"/> <br>
+			<input type="number" name="impozit" id="impozit"/> <br>
 
+			<input type="reset" value="Reset">
+			<input type="button" value="Submit" onclick="validateAndSubmit()"/> <br>
+			<span id="output"></span>
 		</form>
 	</div>
 </div>
