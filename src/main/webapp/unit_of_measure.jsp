@@ -22,13 +22,13 @@
             <%
                 try {
                     Connection connection = ConnectionProvider.getConnection();
-                    String sql = "select * from  unitat_de_masura";
+                    String sql = "select * from  unit_of_measure";
                     PreparedStatement preparedStmt = connection.prepareStatement(sql);
                     ResultSet result = preparedStmt.executeQuery();
 
                     while(result.next()){
-                        String um = result.getString("unitate_de_masura");
-                        String ab_um = result.getString("unitate_de_masura_short");
+                        String um = result.getString("name");
+                        String ab_um = result.getString("short");
 
                         out.println("<tr class=\"um_table_data_row\">" +
                                         "<form method=\"POST\" action=\"umDeleteServlet\">" +

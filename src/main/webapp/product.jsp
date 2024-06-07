@@ -21,12 +21,12 @@
             <%
                 try {
                     Connection connection = ConnectionProvider.getConnection();
-                    String sql = "select * from  produs";
+                    String sql = "select * from  product";
                     PreparedStatement preparedStmt = connection.prepareStatement(sql);
                     ResultSet result = preparedStmt.executeQuery();
 
                     while(result.next()){
-                        String product = result.getString("produs");
+                        String product = result.getString("name");
 
                         out.println("<tr class=\"product_table_data_row\">" +
                                         "<form method=\"POST\" action=\"product_delete\">" +

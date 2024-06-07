@@ -10,7 +10,7 @@ public class UmDeleteServlet extends EntryDeleteServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
-        deleteEntry(request, response, "unitat_de_masura", "unitate_de_masura", "um_to_delete", "unitati_de_masura.jsp");
+        deleteEntry(request, response, "unitat_de_masura", "unitate_de_masura", "um_to_delete", "unit_of_measure.jsp");
     }
 
 }

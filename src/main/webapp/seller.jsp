@@ -22,13 +22,13 @@
             <%
                 try {
                     Connection connection = ConnectionProvider.getConnection();
-                    String sql = "select * from  furnizor";
+                    String sql = "select * from  supplier";
                     PreparedStatement preparedStmt = connection.prepareStatement(sql);
                     ResultSet result = preparedStmt.executeQuery();
 
                     while(result.next()){
-                        String seller = result.getString("furnizor");
-                        String uniqueCode = result.getString("cod_unic");
+                        String seller = result.getString("name");
+                        String uniqueCode = result.getString("unique_code");
 
                         out.println("<tr class=\"seller_table_data_row\">" +
                                         "<form method=\"POST\" action=\"sellerDeleteServlet\">" +

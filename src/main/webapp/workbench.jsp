@@ -32,7 +32,7 @@
 
 	<h1>Contabilitate</h1>
 
-	<a href="unitati_de_masura.jsp">Unitati de masura</a>
+	<a href="unit_of_measure.jsp">Unitati de masura</a>
 	<a href="seller.jsp">Furnizori</a>
 	<a href="product.jsp">Produse</a>
 
