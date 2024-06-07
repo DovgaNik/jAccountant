@@ -11,6 +11,6 @@ import java.io.IOException;
 public class AddSellerServlet extends EntryAddServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        addEntry(request, response, "furnizor", new String[]{"furnizor", "cod_unic"}, new String[]{"seller", "uniqueCode"}, "seller.jsp");
+        addEntry(request, response, "supplier", new String[]{"name", "unique_code"}, new String[]{"seller", "uniqueCode"}, "seller.jsp");
     }
 }

@@ -10,6 +10,6 @@ import java.io.IOException;
 public class AddMeasureUnitServlet extends EntryAddServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        addEntry(request, response, "unitat_de_masura", new String[]{"unitate_de_masura", "unitate_de_masura_short"}, new String[]{"um", "ab_um"}, "unit_of_measure.jsp");
+        addEntry(request, response, "unit_of_measure", new String[]{"name", "short"}, new String[]{"um", "ab_um"}, "unit_of_measure.jsp");
     }
 }

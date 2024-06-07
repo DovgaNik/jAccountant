@@ -9,6 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 public class DeleteProductServlet extends EntryDeleteServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
-        deleteEntry(request, response, "produs", "produs", "product_to_delete", "product.jsp");
+        deleteEntry(request, response, "product", "product", "product_to_delete", "product.jsp");
     }
 }

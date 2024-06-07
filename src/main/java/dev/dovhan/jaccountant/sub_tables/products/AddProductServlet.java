@@ -10,7 +10,7 @@ public class AddProductServlet extends EntryAddServlet {
 
     @Override
     public void doPost (HttpServletRequest request, HttpServletResponse response) {
-        addEntry(request, response, "produs", new String[]{"produs"}, new String[]{"product"}, "product.jsp");
+        addEntry(request, response, "product", new String[]{"name"}, new String[]{"product"}, "product.jsp");
     }
 
 }

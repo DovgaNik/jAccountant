@@ -10,7 +10,7 @@ public class DeleteSellerServlet extends EntryDeleteServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
-        deleteEntry(request, response, "furnizor", "furnizor", "seller_to_delete", "seller.jsp");
+        deleteEntry(request, response, "supplier", "name", "seller_to_delete", "seller.jsp");
     }
 
 }
