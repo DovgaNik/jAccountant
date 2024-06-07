@@ -47,7 +47,7 @@ public abstract class LoginUtils {
         PreparedStatement preparedStmt = connection.prepareStatement(sql);
         ResultSet result = preparedStmt.executeQuery();
         if (result.next()) {
-            boolean isVerified = Objects.equals(result.getString("passwordHash"), generateHash(password));
+            boolean isVerified = Objects.equals(result.getString("password_hash"), generateHash(password));
             connection.close();
             return isVerified;
         }

@@ -13,9 +13,9 @@
 <%
 	try {
 		connection = ConnectionProvider.getConnection();
-		furnizor_table = DBActions.getDbAsAMap("furnizor", connection, "furnizor");
-		produs_table = DBActions.getDbAsAMap("produs", connection, "produs");
-		um_table = DBActions.getDbAsAMap("unitat_de_masura", connection, "unitate_de_masura");
+		furnizor_table = DBActions.getDbAsAMap("supplier", connection, "name");
+		produs_table = DBActions.getDbAsAMap("product", connection, "name");
+		um_table = DBActions.getDbAsAMap("unit_of_measure", connection, "name");
 	} catch (Exception e) {
 		throw new RuntimeException(e);
 	}
@@ -60,46 +60,46 @@
 			<%
 				try {
 					Connection connection = ConnectionProvider.getConnection();
-					String sql = "select * from  vanzare";
+					String sql = "select * from  sale";
 					PreparedStatement preparedStmt = connection.prepareStatement(sql);
 					ResultSet result = preparedStmt.executeQuery();
 
 					while(result.next()){
 						int id = result.getInt(1);
 						Date data = result.getDate(2);
-						int furnizor = result.getInt(3); //FK
-						int produs = result.getInt(4); //FK
+						int supplier_id = result.getInt(3); //FK
+						int product_id = result.getInt(4); //FK
 						String caen = result.getString(5);
-						int cantitate = result.getInt(6);
-						int unitate_de_masura = result.getInt(7); //FK
-						BigDecimal cheltuieli = result.getBigDecimal(8);
-						BigDecimal venituri = result.getBigDecimal(9);
+						int quantity = result.getInt(6);
+						int unit_of_measure_id = result.getInt(7); //FK
+						BigDecimal expenses = result.getBigDecimal(8);
+						BigDecimal revenue = result.getBigDecimal(9);
 						int note = result.getInt(10);
-						BigDecimal deductibil = result.getBigDecimal(11);
+						BigDecimal deducible = result.getBigDecimal(11);
 						BigDecimal profit = result.getBigDecimal(12);
-						BigDecimal impozabil = result.getBigDecimal(13);
-						BigDecimal impozit = result.getBigDecimal(14);
+						BigDecimal taxable = result.getBigDecimal(13);
+						BigDecimal tax = result.getBigDecimal(14);
 
-						String furnizor_name = furnizor_table.get(furnizor).toString();
-						String produs_name = produs_table.get(produs).toString();
-						String um_name = um_table.get(unitate_de_masura).toString();
+						String supplier_name = furnizor_table.get(supplier_id).toString();
+						String product_name = produs_table.get(product_id).toString();
+						String unit_of_measure_name = um_table.get(unit_of_measure_id).toString();
 
 						out.println(
 								"<tr class=\"main_table_data_row\">" +
 										"<form method=\"POST\" action=\"deleteInvoice\">" +
 											"<td class=\"main_table_data\">" + data + "</td>" +
-											"<td class=\"main_table_data\">" + furnizor_name + "</td>" +
-											"<td class=\"main_table_data\">" + produs_name + "</td>" +
+											"<td class=\"main_table_data\">" + supplier_name + "</td>" +
+											"<td class=\"main_table_data\">" + product_name + "</td>" +
 											"<td class=\"main_table_data\">" + caen + "</td>" +
-											"<td class=\"main_table_data\">" + cantitate + "</td>" +
-											"<td class=\"main_table_data\">" + um_name + "</td>" +
-											"<td class=\"main_table_data\">" + cheltuieli + "</td>" +
-											"<td class=\"main_table_data\">" + venituri + "</td>" +
+											"<td class=\"main_table_data\">" + quantity + "</td>" +
+											"<td class=\"main_table_data\">" + unit_of_measure_name + "</td>" +
+											"<td class=\"main_table_data\">" + expenses + "</td>" +
+											"<td class=\"main_table_data\">" + revenue + "</td>" +
 											"<td class=\"main_table_data\">" + note + "</td>" +
-											"<td class=\"main_table_data\">" + deductibil + "</td>" +
+											"<td class=\"main_table_data\">" + deducible + "</td>" +
 											"<td class=\"main_table_data\">" + profit + "</td>" +
-											"<td class=\"main_table_data\">" + impozabil + "</td>" +
-											"<td class=\"main_table_data\">" + impozit + "</td>" +
+											"<td class=\"main_table_data\">" + taxable + "</td>" +
+											"<td class=\"main_table_data\">" + tax + "</td>" +
 											"<td class=\"main_table_data\">" +
 												"<input type=\"submit\" value=\"Sterge\"/>" +
 												"<input type=\"hidden\" value=\"" + id +"\" name=\"sell_to_delete\"/>" +
@@ -126,18 +126,25 @@
 			<label for="seller">Furnizor: </label>
 			<select name="seller" id="seller">
 				<%
-					for (String i : furnizor_table.values()){
-						out.println("<option value=\"" + i + "\">" + i + "</option>");
+					try {
+						for (String i : furnizor_table.values()) {
+							out.println("<option value=\"" + i + "\">" + i + "</option>");
+						}
+					} catch (Exception e) {
+						out.println(e.getMessage());
 					}
-
 				%>
 			</select> <br>
 
 			<label for="product">Produs: </label>
 			<select name="product" id="product">
 				<%
-					for (String i : produs_table.values()){
-						out.println("<option value=\"" + i + "\">" + i + "</option>");
+					try {
+						for (String i : produs_table.values()){
+							out.println("<option value=\"" + i + "\">" + i + "</option>");
+						}
+					} catch (Exception e) {
+						out.println(e.getMessage());
 					}
 				%>
 			</select> <br>
@@ -151,8 +158,12 @@
 			<label for="um">Unitat de masura: </label>
 			<select name="um" id="um">
 				<%
-					for (String i : um_table.values()){
-						out.println("<option value=\"" + i + "\">" + i + "</option>");
+					try {
+						for (String i : um_table.values()){
+							out.println("<option value=\"" + i + "\">" + i + "</option>");
+						}
+					} catch (Exception e) {
+						out.println(e.getMessage());
 					}
 				%>
 			</select> <br>
