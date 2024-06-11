@@ -1,12 +1,11 @@
 function validateAndSubmit() {
-    let seller = document.getElementById("seller").value;
-    let uniqueCode = document.getElementById("uniqueCode").value;
+    let gender = document.getElementById("gender").value;
 
-    if (seller && uniqueCode){
+    if (gender){
         let cells = document.getElementsByTagName("td");
         let foundExisting = false;
         for (let i = 0; i < cells.length; i++){
-            if (cells[i].textContent === seller || cells[i].textContent === uniqueCode){
+            if (cells[i].textContent === gender){
                 foundExisting = true;
             }
         }
@@ -14,11 +13,11 @@ function validateAndSubmit() {
             document.add_form.submit();
         } else {
             let output = document.getElementById("output");
-            output.innerHTML = "❌ You have provided a seller that already exists in the database."
+            output.innerHTML = "❌ You have provided a measure unit that already exists in the database."
         }
     } else {
         let output = document.getElementById("output");
-        output.innerHTML = "❌ Please fill in both fields."
+        output.innerHTML = "❌ Please fill in the field."
     }
 
 }

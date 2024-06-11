@@ -25,6 +25,7 @@
 <head>
 	<title>Workbench</title>
 	<link href="styles/workbench.css" rel="stylesheet" type="text/css">
+	<link rel="icon" href="favicon.ico" />
 	<script src="scripts/vanzare.js"></script>
 </head>
 <body>
@@ -32,9 +33,10 @@
 
 	<h1>Contabilitate</h1>
 
-	<a href="unit_of_measure.jsp">Unitati de masura</a>
-	<a href="seller.jsp">Furnizori</a>
-	<a href="product.jsp">Produse</a>
+	<a href="subpages/unit_of_measure.jsp">Unitati de masura</a>
+	<a href="subpages/seller.jsp">Furnizori</a>
+	<a href="subpages/product.jsp">Produse</a>
+	<a href="subpages/gender.jsp">Genderi</a>
 
 </div>
 <div class="flex_container">

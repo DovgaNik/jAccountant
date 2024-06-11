@@ -6,8 +6,8 @@
 <html>
 <head>
     <title>Unitati de masura</title>
-    <link href="styles/unitati_de_masura.css" rel="stylesheet" type="text/css">
-    <script src="scripts/um.js"></script>
+    <link href="../styles/unitati_de_masura.css" rel="stylesheet" type="text/css">
+    <script src="../scripts/um.js"></script>
 </head>
 <body>
 <h1>Unitati de masura</h1>

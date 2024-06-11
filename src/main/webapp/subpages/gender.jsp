@@ -5,35 +5,37 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <html>
 <head>
-    <title>Produse</title>
-    <link href="styles/product.css" rel="stylesheet" type="text/css">
-    <script src="scripts/product.js"></script>
+    <title>Gender</title>
+    <link href="../styles/gender.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="../favicon.ico" />
+
+    <script src="../scripts/gender.js"></script>
 </head>
 <body>
-<h1>Produse</h1>
+<h1>Gender</h1>
 <div class="flex_container">
     <div class="table_container">
-        <table class="product_table">
-            <tr class="product_table_header_row">
-                <th class="product_table_header">Produs</th>
+        <table class="gender_table">
+            <tr class="gender_table_header_row">
+                <th class="gender_table_header">Gender</th>
                 <th>Delete</th>
             </tr>
             <%
                 try {
                     Connection connection = ConnectionProvider.getConnection();
-                    String sql = "select * from  product";
+                    String sql = "select * from  gender";
                     PreparedStatement preparedStmt = connection.prepareStatement(sql);
                     ResultSet result = preparedStmt.executeQuery();
 
                     while(result.next()){
-                        String product = result.getString("name");
+                        String gender = result.getString("gender");
 
-                        out.println("<tr class=\"product_table_data_row\">" +
-                                        "<form method=\"POST\" action=\"product_delete\">" +
-                                            "<td class=\"product_table_data\">" + product + "</td>" +
-                                            "<td class=\"product_table_data\">" +
-                                                "<input type=\"submit\" value=\"Delete\", class=\"product_delete\"/>" +
-                                                "<input type=\"hidden\" value=\"" + product +"\" name=\"product_to_delete\"/>" +
+                        out.println("<tr class=\"gender_table_data_row\">" +
+                                        "<form method=\"POST\" action=\"genderDeleteServlet\">" +
+                                            "<td class=\"gender_table_data\">" + gender + "</td>" +
+                                            "<td class=\"gender_table_data\">" +
+                                                "<input type=\"submit\" value=\"Delete\"/>" +
+                                                "<input type=\"hidden\" value=\"" + gender +"\" name=\"gender_to_delete\"/>" +
                                             "</td>" +
                                         "</form>" +
                                     "</tr>");
@@ -48,10 +50,10 @@
         </table>
     </div>
     <div class="add_container">
-        <form action="add_product" method="POST" name="add_form">
+        <form action="add_gender" method="POST" name="add_form">
             <label>
-                Produs:
-                <input type="text" name="product" id="product">
+                Gender:
+                <input type="text" name="gender" id="gender">
             </label>
             <br/><br/>
             <input type="button" value="Submit" onclick="validateAndSubmit()"/>
