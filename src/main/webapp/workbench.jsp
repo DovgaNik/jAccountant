@@ -37,6 +37,7 @@
 	<a href="subpages/seller.jsp">Furnizori</a>
 	<a href="subpages/product.jsp">Produse</a>
 	<a href="subpages/gender.jsp">Genderi</a>
+	<a href="subpages/country.jsp">Tari</a>
 
 </div>
 <div class="flex_container">
