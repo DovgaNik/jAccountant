@@ -1,8 +1,8 @@
 <%@ page import="dev.dovhan.jaccountant.utilities.ConnectionProvider" %>
-<%@ page import="java.math.BigDecimal" %>
-<%@ page import="dev.dovhan.jaccountant.utilities.DBActions" %>
 <%@ page import="java.sql.*" %>
-<%@ page import="java.util.HashMap" %>
+<%@ page import="java.nio.file.Files" %>
+<%@ page import="java.nio.file.Paths" %>
+<%@ page import="dev.dovhan.jaccountant.utilities.Credentials" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%!Connection connection;%>
@@ -20,7 +20,7 @@
 	<title>Workbench</title>
 	<link href="styles/workbench.css" rel="stylesheet" type="text/css">
 	<link rel="icon" href="favicon.ico" />
-	<script src="scripts/vanzare.js"></script>
+	<script src="scripts/workbench.js"></script>
 </head>
 <body>
 <div class="header">
@@ -48,74 +48,38 @@
 				<th class="main_table_header">Sterge</th>
 			</tr>
 			<%
-				String sql =
-						"SELECT \n" +
-						"    supplierinvoice.invoice_date AS date,\n" +
-						"    supplier.name AS name,\n" +
-						"    products.name AS product,\n" +
-						"    supplier_transaction.caen AS caen,\n" +
-						"    supplier_transaction.quantity AS quantity,\n" +
-						"    unit_of_measure.short AS um,\n" +
-						"    supplierinvoice.price AS spendings,\n" +
-						"    NULL AS revenue,\n" +
-						"    supplier_transaction.notes AS notes\n" +
-						"FROM\n" +
-						"    supplierinvoice\n" +
-						"        INNER JOIN\n" +
-						"    supplier ON supplierinvoice.id = supplier.id\n" +
-						"        INNER JOIN\n" +
-						"    supplier_transaction ON supplier_transaction.invoice_id = supplierinvoice.id\n" +
-						"        INNER JOIN\n" +
-						"    unit_of_measure ON supplier_transaction.unit_of_measure_id = unit_of_measure.id\n" +
-						"        INNER JOIN\n" +
-						"    products ON supplier_transaction.product_id = products.id \n" +
-						"UNION ALL SELECT \n" +
-						"    customerinvoice.invoice_date AS date,\n" +
-						"    person.name AS name,\n" +
-						"    products.name AS product,\n" +
-						"    customer_transaction.caen AS caen,\n" +
-						"    customer_transaction.quantity AS quantity,\n" +
-						"    unit_of_measure.short AS um,\n" +
-						"    NULL AS spendings,\n" +
-						"    customerinvoice.price AS revenue,\n" +
-						"    customer_transaction.notes AS notes\n" +
-						"FROM\n" +
-						"    customerinvoice\n" +
-						"        INNER JOIN\n" +
-						"    person ON customerinvoice.id = person.id\n" +
-						"        INNER JOIN\n" +
-						"    customer_transaction ON customer_transaction.invoice_id = customerinvoice.id\n" +
-						"        INNER JOIN\n" +
-						"    unit_of_measure ON customer_transaction.unit_of_measure_id = unit_of_measure.id\n" +
-						"        INNER JOIN\n" +
-						"    products ON customer_transaction.product_id = products.id\n" +
-						"ORDER BY date;";
-				PreparedStatement statement = connection.prepareStatement(sql);
-				ResultSet result = statement.executeQuery();
+				Credentials credentials = new Credentials();
+				String sql = Files.readString(Paths.get(credentials.pathToSQL + "/workbench_request.sql"));
+				Statement statement = connection.createStatement();
+				ResultSet result = statement.executeQuery(sql);
 				while (result.next()) {
 					try {
 						out.println(
-								"<tr class=\"main_table_data_row\">" +
-										"<form method=\"POST\" action=\"deleteInvoice\">" +
-										"<td class=\"main_table_data\">" + result.getDate("date") + "</td>" +
-										"<td class=\"main_table_data\">" + result.getString("name") + "</td>" +
-										"<td class=\"main_table_data\">" + result.getString("product") + "</td>" +
-										"<td class=\"main_table_data\">" + result.getString("caen") + "</td>" +
-										"<td class=\"main_table_data\">" + result.getInt("quantity") + "</td>" +
-										"<td class=\"main_table_data\">" + result.getString("um") + "</td>" +
-										"<td class=\"main_table_data\">" + result.getInt("spendings") + "</td>" +
-										"<td class=\"main_table_data\">" + result.getInt("revenue") + "</td>" +
-										"<td class=\"main_table_data\">" + result.getString("notes") + "</td>" +
-										"<td class=\"main_table_data\">" + 0 + "</td>" +
-										"<td class=\"main_table_data\">" + (result.getInt("revenue") - result.getInt("spendings")) + "</td>" +
-										"<td class=\"main_table_data\">" + 0 + "</td>" +
-										"<td class=\"main_table_data\">" + ((result.getInt("revenue") - result.getInt("spendings")) * 0.2) + "</td>" +
-										"<td class=\"main_table_data\">" +
-										"<input type=\"submit\" value=\"Sterge\"/>" +
-										"<input type=\"hidden\" value=\"" + result.getString("name") +"\" name=\"sell_to_delete\"/>" +
-										"</td>" +
-										"</form>"+
-										"</tr>");
+							//Data 	Furnizor/Persoana 	Produs 	caen 	Cantitate 	UM 	Cheltuieli 	Venituri 	Note 	Deductibil 	Profit 	Impozabil 	Impozit
+							"<tr class=\"main_table_data_row\">" +
+								"<form method=\"POST\" action=\"deleteInvoice\">" +
+
+									"<td class=\"main_table_data\">" + result.getDate("date") + "</td>" + //Data
+									"<td class=\"main_table_data\">" + result.getString("name") + "</td>" + //Furnizor/Persoana
+									"<td class=\"main_table_data\">" + result.getString("product") + "</td>" + //Produs
+									"<td class=\"main_table_data\">" + result.getString("caen") + "</td>" + //caen
+									"<td class=\"main_table_data\">" + result.getInt("quantity") + "</td>" + //Cantitate
+									"<td class=\"main_table_data\">" + result.getString("um") + "</td>" + //UM
+									"<td class=\"main_table_data\">" + result.getInt("spendings") + "</td>" + //Cheltuieli
+									"<td class=\"main_table_data\">" + result.getInt("revenue") + "</td>" + //Venituri
+									"<td class=\"main_table_data\">" + result.getString("notes") + "</td>" + //Note
+									"<td class=\"main_table_data\">" + result.getString("deductible") + "</td>" + //Deductibil
+									"<td class=\"main_table_data\">" + "C" + (result.getInt("revenue") - result.getInt("spendings")) + "</td>" + //Profit
+									"<td class=\"main_table_data\">" + result.getString("taxable") + "</td>" + //Impozabil
+									"<td class=\"main_table_data\">" + "C" + ((result.getInt("revenue") - result.getInt("spendings")) * 0.2) + "</td>" + //Impozit
+
+									"<td class=\"main_table_data\">" +
+									"<input type=\"submit\" value=\"Sterge\"/>" +
+									"<input type=\"hidden\" value=\"" + result.getString("name") +"\" name=\"sell_to_delete\"/>" +
+									"</td>" +
+
+								"</form>"+
+								"</tr>");
 					} catch (SQLException e) {
 						throw new RuntimeException(e);
 					}
@@ -128,7 +92,68 @@
 	<div class="sidebar">
 		<h1>Add entry</h1>
 		<form method="POST" action="addInvoice" name="add_form">
+			<p>Type of invoice:</p>
+			<input type="radio" id="customer" name="type_of_invoice" value="Customer" onclick="switchType(this)">
+			<label for="customer">Customer</label><br>
+			<input type="radio" id="business" name="type_of_invoice" value="Business" onclick="switchType(this)">
+			<label for="business">Business</label><br>
 
+			<label for="date">Date of transaction: </label>
+			<input type="date" name="date" id="date"/> <br>
+
+			<div id="entity_container" style="display: none">
+				<label for="entity" id="entity_label" ></label>
+				<select name="entity" id="entity">
+					<%
+
+					%>
+				</select> <br>
+			</div>
+
+			<label for="product">Produs: </label>
+			<select name="product" id="product">
+				<%
+
+				%>
+			</select> <br>
+
+			<label for="caen">caen: </label>
+			<input type="number" name="caen" id="caen"/> <br>
+
+			<label for="quantity">Cantitate: </label>
+			<input type="number" name="quantity" id="quantity"/> <br>
+
+			<label for="um">Unitat de masura: </label>
+			<select name="um" id="um">
+				<%
+
+				%>
+			</select> <br>
+
+			<label for="cheltuieli">Cheltuieli: </label>
+			<input type="number" name="cheltuieli" id="cheltuieli"/> <br>
+
+			<label for="venituri">Venituri: </label>
+			<input type="number" name="venituri" id="venituri"/> <br>
+
+			<label for="note">Note: </label>
+			<input type="number" name="note" id="note"/> <br>
+
+			<label for="deductibil">Deductibil: </label>
+			<input type="number" name="deductibil" id="deductibil"/> <br>
+
+			<label for="profit">Profit: </label>
+			<input type="number" name="profit" id="profit"/> <br>
+
+			<label for="impozabil">Impozabil: </label>
+			<input type="number" name="impozabil" id="impozabil"/> <br>
+
+			<label for="impozit">Impozit: </label>
+			<input type="number" name="impozit" id="impozit"/> <br>
+
+			<input type="reset" value="Reset">
+			<input type="button" value="Submit" onclick="validateAndSubmit()"/> <br>
+			<span id="output"></span>
 		</form>
 	</div>
 </div>

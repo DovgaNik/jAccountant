@@ -9,11 +9,13 @@ public class Credentials {
         public static String dbUsername;
         public static String dbPassword;
         public static String dbURL;
+        public static String pathToSQL;
 
         public Credentials() throws IOException {
             List<String> lines = Files.readAllLines(Path.of("D:", "credentials"));
             dbUsername = lines.get(0);
             dbPassword = lines.get(1);
             dbURL = lines.get(2);
+            pathToSQL = lines.get(3);
         }
 }

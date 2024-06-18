@@ -1,43 +1,45 @@
-USE invoice_app;
-
-SELECT 
-    supplierinvoice.invoice_date AS date,
-    supplier.name AS name,
-    products.name AS product,
-    supplier_transaction.caen AS caen,
-    supplier_transaction.quantity AS quantity,
-    unit_of_measure.short AS um,
-    supplierinvoice.price AS spendings,
+SELECT
+    invoice_app.supplierinvoice.invoice_date AS date,
+    invoice_app.supplier.name AS name,
+    invoice_app.products.name AS product,
+    invoice_app.supplier_transaction.caen AS caen,
+    invoice_app.supplier_transaction.quantity AS quantity,
+    invoice_app.unit_of_measure.short AS um,
+    invoice_app.supplierinvoice.price AS spendings,
     NULL AS revenue,
-    supplier_transaction.notes AS notes
+    invoice_app.supplier_transaction.notes AS notes,
+    invoice_app.supplier_transaction.deductible AS deductible,
+    invoice_app.supplier_transaction.taxable AS taxable
 FROM
-    supplierinvoice
+    invoice_app.supplierinvoice
         INNER JOIN
-    supplier ON supplierinvoice.id = supplier.id
+    invoice_app.supplier ON invoice_app.supplierinvoice.id = invoice_app.supplier.id
         INNER JOIN
-    supplier_transaction ON supplier_transaction.invoice_id = supplierinvoice.id
+    invoice_app.supplier_transaction ON invoice_app.supplier_transaction.invoice_id = invoice_app.supplierinvoice.id
         INNER JOIN
-    unit_of_measure ON supplier_transaction.unit_of_measure_id = unit_of_measure.id
+    invoice_app.unit_of_measure ON invoice_app.supplier_transaction.unit_of_measure_id = invoice_app.unit_of_measure.id
         INNER JOIN
-    products ON supplier_transaction.product_id = products.id 
-UNION ALL SELECT 
-    customerinvoice.invoice_date AS date,
-    person.name AS name,
-    products.name AS product,
-    customer_transaction.caen AS caen,
-    customer_transaction.quantity AS quantity,
-    unit_of_measure.short AS um,
-    NULL AS spendings,
-    customerinvoice.price AS revenue,
-    customer_transaction.notes AS notes
+    invoice_app.products ON invoice_app.supplier_transaction.product_id = invoice_app.products.id
+UNION ALL SELECT
+              invoice_app.customerinvoice.invoice_date AS date,
+              invoice_app.person.name AS name,
+              invoice_app.products.name AS product,
+              invoice_app.customer_transaction.caen AS caen,
+              invoice_app.customer_transaction.quantity AS quantity,
+              invoice_app.unit_of_measure.short AS um,
+              NULL AS spendings,
+              invoice_app.customerinvoice.price AS revenue,
+              invoice_app.customer_transaction.notes AS notes,
+              invoice_app.customer_transaction.deductible AS deductible,
+              invoice_app.customer_transaction.taxable AS taxable
 FROM
-    customerinvoice
+    invoice_app.customerinvoice
         INNER JOIN
-    person ON customerinvoice.id = person.id
+    invoice_app.person ON invoice_app.customerinvoice.id = invoice_app.person.id
         INNER JOIN
-    customer_transaction ON customer_transaction.invoice_id = customerinvoice.id
+    invoice_app.customer_transaction ON invoice_app.customer_transaction.invoice_id = invoice_app.customerinvoice.id
         INNER JOIN
-    unit_of_measure ON customer_transaction.unit_of_measure_id = unit_of_measure.id
+    invoice_app.unit_of_measure ON invoice_app.customer_transaction.unit_of_measure_id = invoice_app.unit_of_measure.id
         INNER JOIN
-    products ON customer_transaction.product_id = products.id
-ORDER BY date;
+    invoice_app.products ON invoice_app.customer_transaction.product_id = invoice_app.products.id
+ORDER BY date DESC;
