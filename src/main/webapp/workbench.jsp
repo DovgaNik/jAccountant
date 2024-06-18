@@ -184,7 +184,18 @@
 			<label for="um">Unitat de masura: </label>
 			<select name="um" id="um">
 				<%
+					try {
+						sql = Files.readString(Paths.get(credentials.pathToSQL + "/units_of_measure.sql"));
+						statement = connection.createStatement();
+						result = statement.executeQuery(sql);
 
+						while (result.next()) {
+							String option = result.getString("name");
+							out.println("<option value=\""  + option + "\">" + option + "</option>");
+						}
+					} catch (Exception e) {
+						out.println(e.getMessage());
+					}
 				%>
 			</select> <br>
 

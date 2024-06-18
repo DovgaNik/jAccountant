@@ -1,0 +1,1 @@
+SELECT name FROM invoice_app.unit_of_measure
