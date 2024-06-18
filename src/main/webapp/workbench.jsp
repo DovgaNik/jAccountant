@@ -92,18 +92,26 @@
 	<div class="sidebar">
 		<h1>Add entry</h1>
 		<form method="POST" action="addInvoice" name="add_form">
-			<p>Type of invoice:</p>
-			<input type="radio" id="customer" name="type_of_invoice" value="Customer" onclick="switchType(this)">
-			<label for="customer">Customer</label><br>
-			<input type="radio" id="business" name="type_of_invoice" value="Business" onclick="switchType(this)">
-			<label for="business">Business</label><br>
+			<span>Type of invoice:</span><br>
+			<input type="radio" id="customer_radio" name="type_of_invoice" value="Customer" onclick="switchType(this)">
+			<label for="customer_radio">Customer</label><br>
+			<input type="radio" id="business_radio" name="type_of_invoice" value="Business" onclick="switchType(this)">
+			<label for="business_radio">Business</label><br>
 
 			<label for="date">Date of transaction: </label>
 			<input type="date" name="date" id="date"/> <br>
 
-			<div id="entity_container" style="display: none">
-				<label for="entity" id="entity_label" ></label>
-				<select name="entity" id="entity">
+			<div id="customer_container" style="display: none">
+				<label for="customer">Persoana: </label>
+				<select name="customer" id="customer">
+					<%
+
+					%>
+				</select> <br>
+			</div>
+			<div id="supplier_container" style="display: none">
+				<label for="supplier">Furnizor: </label>
+				<select name="supplier" id="supplier">
 					<%
 
 					%>

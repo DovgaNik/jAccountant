@@ -1,12 +1,12 @@
 function switchType(control) {
-	let entityLabel = document.getElementById("entity_label");
-	let entityContainer = document.getElementById("entity_container");
+	let supplierContainer = document.getElementById("customer_container");
+	let customerContainer = document.getElementById("supplier_container");
 
-	if (control.id == "business"){
-		entityLabel.innerHTML = "Furnizor:";
-		entityContainer.style.display = "";
+	if (control.id === "business_radio"){
+		customerContainer.style.display = "";
+		supplierContainer.style.display = "none";
 	} else {
-		entityLabel.innerHTML = "Persoana:";
-		entityContainer.style.display = "";
+		supplierContainer.style.display = "";
+		customerContainer.style.display = "none";
 	}
 }
