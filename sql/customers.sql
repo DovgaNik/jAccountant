@@ -1,0 +1,1 @@
+SELECT surname, name FROM invoice_app.person

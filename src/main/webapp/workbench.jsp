@@ -6,6 +6,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%!Connection connection;%>
+<%!Credentials credentials;%>
 
 <%
 	try {
@@ -14,6 +15,15 @@
 		throw new RuntimeException(e);
 	}
 %>
+
+<%
+	try {
+		credentials = new Credentials();
+	} catch (Exception e) {
+		throw new RuntimeException(e);
+	}
+%>
+
 
 <html>
 <head>
@@ -48,7 +58,6 @@
 				<th class="main_table_header">Sterge</th>
 			</tr>
 			<%
-				Credentials credentials = new Credentials();
 				String sql = Files.readString(Paths.get(credentials.pathToSQL + "/workbench_request.sql"));
 				Statement statement = connection.createStatement();
 				ResultSet result = statement.executeQuery(sql);
@@ -105,7 +114,18 @@
 				<label for="customer">Persoana: </label>
 				<select name="customer" id="customer">
 					<%
+						try {
+							sql = Files.readString(Paths.get(credentials.pathToSQL + "/customers.sql"));
+							statement = connection.createStatement();
+							result = statement.executeQuery(sql);
 
+							while (result.next()) {
+								String option = result.getString("surname") + " " + result.getString("name");
+								out.println("<option value=\""  + option + "\">" + option + "</option>");
+							}
+						} catch (Exception e) {
+							out.println(e.getMessage());
+						}
 					%>
 				</select> <br>
 			</div>
@@ -113,7 +133,18 @@
 				<label for="supplier">Furnizor: </label>
 				<select name="supplier" id="supplier">
 					<%
+						try {
+							sql = Files.readString(Paths.get(credentials.pathToSQL + "/suppliers.sql"));
+							statement = connection.createStatement();
+							result = statement.executeQuery(sql);
 
+							while (result.next()) {
+								String option = result.getString("name");
+								out.println("<option value=\""  + option + "\">" + option + "</option>");
+							}
+						} catch (Exception e) {
+							out.println(e.getMessage());
+						}
 					%>
 				</select> <br>
 			</div>
