@@ -102,13 +102,16 @@
 		<h1>Add entry</h1>
 		<form method="POST" action="addInvoice" name="add_form">
 			<span>Type of invoice:</span><br>
-			<input type="radio" id="customer_radio" name="type_of_invoice" value="Customer" onclick="switchType(this)">
-			<label for="customer_radio">Customer</label><br>
-			<input type="radio" id="business_radio" name="type_of_invoice" value="Business" onclick="switchType(this)">
-			<label for="business_radio">Business</label><br>
+			<label for="customer_radio">Customer</label>
+			<input type="radio" id="customer_radio" name="type_of_invoice" value="Customer" onclick="switchType(this)"><br>
+
+			<label for="business_radio">Business</label>
+			<input type="radio" id="business_radio" name="type_of_invoice" value="Business" onclick="switchType(this)"><br>
+
 
 			<label for="date">Date of transaction: </label>
 			<input type="date" name="date" id="date"/> <br>
+
 
 			<div id="customer_container" style="display: none">
 				<label for="customer">Persoana: </label>
@@ -129,6 +132,7 @@
 					%>
 				</select> <br>
 			</div>
+
 			<div id="supplier_container" style="display: none">
 				<label for="supplier">Furnizor: </label>
 				<select name="supplier" id="supplier">
@@ -149,18 +153,33 @@
 				</select> <br>
 			</div>
 
+
 			<label for="product">Produs: </label>
 			<select name="product" id="product">
 				<%
+					try {
+						sql = Files.readString(Paths.get(credentials.pathToSQL + "/products.sql"));
+						statement = connection.createStatement();
+						result = statement.executeQuery(sql);
 
+						while (result.next()) {
+							String option = result.getString("name");
+							out.println("<option value=\""  + option + "\">" + option + "</option>");
+						}
+					} catch (Exception e) {
+						out.println(e.getMessage());
+					}
 				%>
 			</select> <br>
+
 
 			<label for="caen">caen: </label>
 			<input type="number" name="caen" id="caen"/> <br>
 
+
 			<label for="quantity">Cantitate: </label>
 			<input type="number" name="quantity" id="quantity"/> <br>
+
 
 			<label for="um">Unitat de masura: </label>
 			<select name="um" id="um">
@@ -169,26 +188,34 @@
 				%>
 			</select> <br>
 
+
 			<label for="cheltuieli">Cheltuieli: </label>
 			<input type="number" name="cheltuieli" id="cheltuieli"/> <br>
+
 
 			<label for="venituri">Venituri: </label>
 			<input type="number" name="venituri" id="venituri"/> <br>
 
+
 			<label for="note">Note: </label>
 			<input type="number" name="note" id="note"/> <br>
+
 
 			<label for="deductibil">Deductibil: </label>
 			<input type="number" name="deductibil" id="deductibil"/> <br>
 
+
 			<label for="profit">Profit: </label>
 			<input type="number" name="profit" id="profit"/> <br>
+
 
 			<label for="impozabil">Impozabil: </label>
 			<input type="number" name="impozabil" id="impozabil"/> <br>
 
+
 			<label for="impozit">Impozit: </label>
 			<input type="number" name="impozit" id="impozit"/> <br>
+
 
 			<input type="reset" value="Reset">
 			<input type="button" value="Submit" onclick="validateAndSubmit()"/> <br>
