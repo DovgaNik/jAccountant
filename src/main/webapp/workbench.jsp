@@ -100,7 +100,7 @@
 
 	<div class="sidebar">
 		<h1>Add entry</h1>
-		<form method="POST" action="addInvoice" name="add_form">
+		<form method="POST" action="addInvoice" name="add_form" class="add_form">
 			<span>Type of invoice:</span><br>
 			<label for="customer_radio">Customer</label>
 			<input type="radio" id="customer_radio" name="type_of_invoice" value="customer" onclick="switchType(this)"><br>

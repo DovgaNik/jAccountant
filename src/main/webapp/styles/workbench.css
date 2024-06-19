@@ -13,9 +13,8 @@
 }
 
 .main_table_data {
-    padding-left: 1%;
-    padding-right: 1%;
     text-align: center;
+    max-width: 150px;
 }
 
 .main_table_data > * {
