@@ -21,53 +21,61 @@ public class AddInvoiceServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		try {
 			Connection connection = ConnectionProvider.getConnection();
+			PreparedStatement statement;
 
-			out.println(request.getParameter("type_of_invoice"));
+			int entity_id;
+			String type;
+
 			if (Objects.equals(request.getParameter("type_of_invoice"), "customer")) {
 				String[] name = request.getParameter("customer").split(" ");
-				int person_id = DBActions.getIDBy2FK(connection, "person", "surname", "name", name[0], name[1]);
-				String invoice_date = request.getParameter("date");
-				float price = Float.parseFloat(request.getParameter("cheltuieli"));
-				int product_id = DBActions.getIDByFK(connection, "products", "name", request.getParameter("product"));
-				String caen = request.getParameter("caen");
-				float quantity = Float.parseFloat(request.getParameter("quantity"));
-				int um = DBActions.getIDByFK(connection, "unit_of_measure", "name", request.getParameter("um"));
-				//float spendings = Float.parseFloat(request.getParameter("cheltuieli"));
-				//float revenue = Float.parseFloat(request.getParameter("venituri"));
-				String note = request.getParameter("note");
-				float deductible = Float.parseFloat(request.getParameter("deductibil"));
-				//float profit = Float.parseFloat(request.getParameter("profit"));
-				float taxable = Float.parseFloat(request.getParameter("impozabil"));
-				//float tax = Float.parseFloat(request.getParameter("impozit"));
-
-
-				PreparedStatement statement = connection.prepareStatement("INSERT INTO customerinvoice (person_id, invoice_date, price) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-				statement.setInt(1, person_id);
-				statement.setString(2, invoice_date);
-				statement.setFloat(3, price);
-				statement.executeUpdate();
-
-				int invoiceID = 0;
-				try (ResultSet result = statement.getGeneratedKeys()) {
-					if (result.next()) {
-						invoiceID = result.getInt(1);
-					}
-				}
-
-				statement = connection.prepareStatement("INSERT INTO customer_transaction (sale_date, product_id, caen, quantity, unit_of_measure_id, price, notes, deductible, taxable, invoice_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-				statement.setString(1, invoice_date);
-				statement.setInt(2, product_id);
-				statement.setString(3, caen);
-				statement.setFloat(4, quantity);
-				statement.setInt(5, um);
-				statement.setFloat(6, price);
-				statement.setString(7, note);
-				statement.setFloat(8, deductible);
-				statement.setFloat(9, taxable);
-				statement.setInt(10, invoiceID);
-				out.println(statement);
-				statement.execute();
+				entity_id = DBActions.getIDBy2FK(connection, "person", "surname", "name", name[0], name[1]);
+				type = "customer";
+			} else {
+				String name = request.getParameter("supplier");
+				entity_id = DBActions.getIDByFK(connection, "supplier", "name", name);
+				type = "supplier";
 			}
+
+			String invoice_date = request.getParameter("date");
+			float price = Float.parseFloat(request.getParameter("cheltuieli"));
+			int product_id = DBActions.getIDByFK(connection, "products", "name", request.getParameter("product"));
+			String caen = request.getParameter("caen");
+			float quantity = Float.parseFloat(request.getParameter("quantity"));
+			int um = DBActions.getIDByFK(connection, "unit_of_measure", "name", request.getParameter("um"));
+			//float spendings = Float.parseFloat(request.getParameter("cheltuieli"));
+			//float revenue = Float.parseFloat(request.getParameter("venituri"));
+			String note = request.getParameter("note");
+			float deductible = Float.parseFloat(request.getParameter("deductibil"));
+			//float profit = Float.parseFloat(request.getParameter("profit"));
+			float taxable = Float.parseFloat(request.getParameter("impozabil"));
+			//float tax = Float.parseFloat(request.getParameter("impozit"));
+
+			statement = connection.prepareStatement("INSERT INTO " + type + "invoice" + " (" + type + "_id, invoice_date, price) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			statement.setInt(1, entity_id);
+			statement.setString(2, invoice_date);
+			statement.setFloat(3, price);
+			statement.executeUpdate();
+
+			int invoiceID = 0;
+			try (ResultSet result = statement.getGeneratedKeys()) {
+				if (result.next()) {
+					invoiceID = result.getInt(1);
+				}
+			}
+
+			statement = connection.prepareStatement("INSERT INTO " + type + "_transaction" + " (sale_date, product_id, caen, quantity, unit_of_measure_id, price, notes, deductible, taxable, invoice_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			statement.setString(1, invoice_date);
+			statement.setInt(2, product_id);
+			statement.setString(3, caen);
+			statement.setFloat(4, quantity);
+			statement.setInt(5, um);
+			statement.setFloat(6, price);
+			statement.setString(7, note);
+			statement.setFloat(8, deductible);
+			statement.setFloat(9, taxable);
+			statement.setInt(10, invoiceID);
+			out.println(statement);
+			statement.execute();
 		} catch (Exception e) {
 			out.println(e.getMessage());
 		}
