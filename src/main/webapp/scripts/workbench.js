@@ -29,6 +29,10 @@ function validateAndSubmit(){
 	let taxable = document.getElementById("impozabil");
 	let tax = document.getElementById("impozit");
 
-	document.add_form.submit();
+	if ((type_customer.checked || type_supplier.checked) && date.value && (supplier.value || person.value) && product.value && caen.value && cantitate.value && unit_of_measure.value && (spendings.value || incomings.value)) {
+		document.add_form.submit();
+	} else {
+		document.getElementById("output").innerHTML = "❌ Please check that you have entered all the required fields!"
+	}
 
 }

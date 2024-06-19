@@ -77,7 +77,6 @@ public class AddInvoiceServlet extends HttpServlet {
 			statement.setFloat(8, deductible);
 			statement.setFloat(9, taxable);
 			statement.setInt(10, invoiceID);
-			out.println(statement);
 			statement.execute();
 
 			connection.close();

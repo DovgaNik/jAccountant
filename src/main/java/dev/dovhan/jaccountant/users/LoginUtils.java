@@ -33,7 +33,7 @@ public abstract class LoginUtils {
 
     public static void register(String user, String password) throws SQLException, IOException, ClassNotFoundException {
         Connection connection = ConnectionProvider.getConnection();
-        String sql = "insert into user (username, password_hash) values (?, ?)";
+        String sql = "insert into users (username, password_hash) values (?, ?)";
         PreparedStatement preparedStmt = connection.prepareStatement(sql);
         preparedStmt.setString (1, user);
         preparedStmt.setString (2, generateHash(password));
@@ -43,7 +43,7 @@ public abstract class LoginUtils {
 
     public static boolean login (String user, String password) throws SQLException, IOException, ClassNotFoundException {
         Connection connection = ConnectionProvider.getConnection();
-        String sql = "select * from  user where username = " + "'" + user + "'";
+        String sql = "select * from users where username = " + "'" + user + "'";
         PreparedStatement preparedStmt = connection.prepareStatement(sql);
         ResultSet result = preparedStmt.executeQuery();
         if (result.next()) {
