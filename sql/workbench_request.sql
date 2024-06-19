@@ -13,7 +13,7 @@ SELECT
 FROM
     invoice_app.supplierinvoice
         INNER JOIN
-    invoice_app.supplier ON invoice_app.supplierinvoice.id = invoice_app.supplier.id
+    invoice_app.supplier ON invoice_app.supplier.id = invoice_app.supplierinvoice.supplier_id
         INNER JOIN
     invoice_app.supplier_transaction ON invoice_app.supplier_transaction.invoice_id = invoice_app.supplierinvoice.id
         INNER JOIN
@@ -35,7 +35,7 @@ UNION ALL SELECT
 FROM
     invoice_app.customerinvoice
         INNER JOIN
-    invoice_app.person ON invoice_app.customerinvoice.id = invoice_app.person.id
+    invoice_app.person ON invoice_app.customerinvoice.person_id = invoice_app.person.id
         INNER JOIN
     invoice_app.customer_transaction ON invoice_app.customer_transaction.invoice_id = invoice_app.customerinvoice.id
         INNER JOIN

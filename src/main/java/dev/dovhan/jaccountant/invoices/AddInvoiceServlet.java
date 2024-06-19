@@ -25,15 +25,18 @@ public class AddInvoiceServlet extends HttpServlet {
 
 			int entity_id;
 			String type;
+			String idColumn;
 
 			if (Objects.equals(request.getParameter("type_of_invoice"), "customer")) {
 				String[] name = request.getParameter("customer").split(" ");
 				entity_id = DBActions.getIDBy2FK(connection, "person", "surname", "name", name[0], name[1]);
 				type = "customer";
+				idColumn = "person_id";
 			} else {
 				String name = request.getParameter("supplier");
 				entity_id = DBActions.getIDByFK(connection, "supplier", "name", name);
 				type = "supplier";
+				idColumn = "supplier_id";
 			}
 
 			String invoice_date = request.getParameter("date");
@@ -50,7 +53,7 @@ public class AddInvoiceServlet extends HttpServlet {
 			float taxable = Float.parseFloat(request.getParameter("impozabil"));
 			//float tax = Float.parseFloat(request.getParameter("impozit"));
 
-			statement = connection.prepareStatement("INSERT INTO " + type + "invoice" + " (" + type + "_id, invoice_date, price) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			statement = connection.prepareStatement("INSERT INTO " + type + "invoice" + " (" + idColumn + ", invoice_date, price) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			statement.setInt(1, entity_id);
 			statement.setString(2, invoice_date);
 			statement.setFloat(3, price);
