@@ -84,7 +84,8 @@
 
 									"<td class=\"main_table_data\">" +
 									"<input type=\"submit\" value=\"Sterge\"/>" +
-									"<input type=\"hidden\" value=\"" + result.getString("name") +"\" name=\"sell_to_delete\"/>" +
+									"<input type=\"hidden\" value=\"" + result.getString("id") +"\" name=\"id_delete\"/>" +
+									"<input type=\"hidden\" value=\"" + result.getString("type") +"\" name=\"type_delete\"/>" +
 									"</td>" +
 
 								"</form>"+

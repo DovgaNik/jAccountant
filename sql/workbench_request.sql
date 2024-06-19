@@ -1,4 +1,6 @@
 SELECT
+    invoice_app.supplierinvoice.id AS id,
+    'supplier' AS type,
     invoice_app.supplierinvoice.invoice_date AS date,
     invoice_app.supplier.name AS name,
     invoice_app.products.name AS product,
@@ -21,6 +23,8 @@ FROM
         INNER JOIN
     invoice_app.products ON invoice_app.supplier_transaction.product_id = invoice_app.products.id
 UNION ALL SELECT
+              invoice_app.customerinvoice.id AS id,
+              'customer' AS type,
               invoice_app.customerinvoice.invoice_date AS date,
               CONCAT(invoice_app.person.name, ' ', invoice_app.person.surname) AS name,
               invoice_app.products.name AS product,

@@ -79,6 +79,9 @@ public class AddInvoiceServlet extends HttpServlet {
 			statement.setInt(10, invoiceID);
 			out.println(statement);
 			statement.execute();
+
+			connection.close();
+			response.sendRedirect("workbench.jsp");
 		} catch (Exception e) {
 			out.println(e.getMessage());
 		}
