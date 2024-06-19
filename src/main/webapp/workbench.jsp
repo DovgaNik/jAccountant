@@ -103,10 +103,10 @@
 		<form method="POST" action="addInvoice" name="add_form">
 			<span>Type of invoice:</span><br>
 			<label for="customer_radio">Customer</label>
-			<input type="radio" id="customer_radio" name="type_of_invoice" value="Customer" onclick="switchType(this)"><br>
+			<input type="radio" id="customer_radio" name="type_of_invoice" value="customer" onclick="switchType(this)"><br>
 
 			<label for="business_radio">Business</label>
-			<input type="radio" id="business_radio" name="type_of_invoice" value="Business" onclick="switchType(this)"><br>
+			<input type="radio" id="business_radio" name="type_of_invoice" value="business" onclick="switchType(this)"><br>
 
 
 			<label for="date">Date of transaction: </label>
@@ -209,7 +209,7 @@
 
 
 			<label for="note">Note: </label>
-			<input type="number" name="note" id="note"/> <br>
+			<input type="text" name="note" id="note"/> <br>
 
 
 			<label for="deductibil">Deductibil: </label>

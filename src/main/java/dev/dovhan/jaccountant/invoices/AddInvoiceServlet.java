@@ -1,52 +1,75 @@
 package dev.dovhan.jaccountant.invoices;
 
-import dev.dovhan.jaccountant.sub_tables.EntryAddServlet;
 import dev.dovhan.jaccountant.utilities.ConnectionProvider;
 import dev.dovhan.jaccountant.utilities.DBActions;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.List;
+import java.sql.ResultSet;
+import java.util.Objects;
 
 @WebServlet (name = "addEntryToInvoices", value = "/addInvoice")
-public class AddInvoiceServlet extends EntryAddServlet {
+public class AddInvoiceServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String[] columns = {"data", "furnizor", "produs", "caen", "cantitate", "unitate_de_masura", "cheltuieli", "venituri", "note", "deductibil", "profit", "impozabil", "impozit"};
-		String[] parameters = {"date", "seller", "product", "caen", "quantity", "um", "cheltuieli", "venituri", "note", "deductibil", "profit", "impozabil", "impozit"};
-
-		List<String> values = buildArrayOfParameters(request, parameters);
-		System.out.println("bp");
-		Connection connection = null;
+		PrintWriter out = response.getWriter();
 		try {
-			connection = ConnectionProvider.getConnection();
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-		values.set(1, Integer.toString(DBActions.getIDByFK(connection, "furnizor", "furnizor", values.get(1))));
-		values.set(2, Integer.toString(DBActions.getIDByFK(connection, "produs", "produs", values.get(2))));
-		values.set(5, Integer.toString(DBActions.getIDByFK(connection, "unitat_de_masura", "unitate_de_masura", values.get(5))));
+			Connection connection = ConnectionProvider.getConnection();
+
+			out.println(request.getParameter("type_of_invoice"));
+			if (Objects.equals(request.getParameter("type_of_invoice"), "customer")) {
+				String[] name = request.getParameter("customer").split(" ");
+				int person_id = DBActions.getIDBy2FK(connection, "person", "surname", "name", name[0], name[1]);
+				String invoice_date = request.getParameter("date");
+				float price = Float.parseFloat(request.getParameter("cheltuieli"));
+				int product_id = DBActions.getIDByFK(connection, "products", "name", request.getParameter("product"));
+				String caen = request.getParameter("caen");
+				float quantity = Float.parseFloat(request.getParameter("quantity"));
+				int um = DBActions.getIDByFK(connection, "unit_of_measure", "name", request.getParameter("um"));
+				//float spendings = Float.parseFloat(request.getParameter("cheltuieli"));
+				//float revenue = Float.parseFloat(request.getParameter("venituri"));
+				String note = request.getParameter("note");
+				float deductible = Float.parseFloat(request.getParameter("deductibil"));
+				//float profit = Float.parseFloat(request.getParameter("profit"));
+				float taxable = Float.parseFloat(request.getParameter("impozabil"));
+				//float tax = Float.parseFloat(request.getParameter("impozit"));
 
 
-		for(String i : values) {
-			System.out.println(i);
-		}
+				PreparedStatement statement = connection.prepareStatement("INSERT INTO customerinvoice (person_id, invoice_date, price) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+				statement.setInt(1, person_id);
+				statement.setString(2, invoice_date);
+				statement.setFloat(3, price);
+				statement.executeUpdate();
 
-		try {
-			PreparedStatement statement = buildStatement(connection, request, "vanzare", columns, values);
-			statement.execute();
-			connection.close();
-			response.sendRedirect("workbench.jsp");
+				int invoiceID = 0;
+				try (ResultSet result = statement.getGeneratedKeys()) {
+					if (result.next()) {
+						invoiceID = result.getInt(1);
+					}
+				}
+
+				statement = connection.prepareStatement("INSERT INTO customer_transaction (sale_date, product_id, caen, quantity, unit_of_measure_id, price, notes, deductible, taxable, invoice_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				statement.setString(1, invoice_date);
+				statement.setInt(2, product_id);
+				statement.setString(3, caen);
+				statement.setFloat(4, quantity);
+				statement.setInt(5, um);
+				statement.setFloat(6, price);
+				statement.setString(7, note);
+				statement.setFloat(8, deductible);
+				statement.setFloat(9, taxable);
+				statement.setInt(10, invoiceID);
+				out.println(statement);
+				statement.execute();
+			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			out.println(e.getMessage());
 		}
-
 	}
 }

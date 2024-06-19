@@ -22,7 +22,7 @@ FROM
     invoice_app.products ON invoice_app.supplier_transaction.product_id = invoice_app.products.id
 UNION ALL SELECT
               invoice_app.customerinvoice.invoice_date AS date,
-              invoice_app.person.name AS name,
+              CONCAT(invoice_app.person.name, ' ', invoice_app.person.surname) AS name,
               invoice_app.products.name AS product,
               invoice_app.customer_transaction.caen AS caen,
               invoice_app.customer_transaction.quantity AS quantity,

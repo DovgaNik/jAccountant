@@ -34,6 +34,22 @@ public abstract class DBActions {
 		}
 	}
 
+	public static int getIDBy2FK (Connection connection, String table, String column1, String column2, String entry1, String entry2) {
+		try {
+			String sql = "SELECT id FROM " + table + " WHERE (" + column1 + ", " + column2 + ") = (?, ?)";
+			PreparedStatement preparedStmt = connection.prepareStatement(sql);
+			preparedStmt.setString(1, entry1);
+			preparedStmt.setString(2, entry2);
+			ResultSet result = preparedStmt.executeQuery();
+			result.next();
+			return result.getInt("id");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+
+	}
+
 	public static HashMap<Integer, String> getDbAsAMap(String table, Connection connection, String columnName) {
 		HashMap<Integer, String> tableMap = new HashMap<>();
 		try {
