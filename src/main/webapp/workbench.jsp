@@ -3,7 +3,8 @@
 <%@ page import="java.nio.file.Files" %>
 <%@ page import="java.nio.file.Paths" %>
 <%@ page import="dev.dovhan.jaccountant.utilities.Credentials" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 
 <%!Connection connection;%>
 <%!Credentials credentials;%>
@@ -58,16 +59,15 @@
 				<th class="main_table_header">Sterge</th>
 			</tr>
 			<%
-				String sql = Files.readString(Paths.get(credentials.pathToSQL + "/workbench_request.sql"));
-				Statement statement = connection.createStatement();
-				ResultSet result = statement.executeQuery(sql);
-				while (result.next()) {
-					try {
+				try {
+					String sql = Files.readString(Paths.get(credentials.pathToSQL + "/workbench_request.sql"));
+					Statement statement = connection.createStatement();
+					ResultSet result = statement.executeQuery(sql);
+					while (result.next()) {
 						out.println(
 							//Data 	Furnizor/Persoana 	Produs 	caen 	Cantitate 	UM 	Cheltuieli 	Venituri 	Note 	Deductibil 	Profit 	Impozabil 	Impozit
 							"<tr class=\"main_table_data_row\">" +
 								"<form method=\"POST\" action=\"deleteInvoice\">" +
-
 									"<td class=\"main_table_data\">" + result.getDate("date") + "</td>" + //Data
 									"<td class=\"main_table_data\">" + result.getString("name") + "</td>" + //Furnizor/Persoana
 									"<td class=\"main_table_data\">" + result.getString("product") + "</td>" + //Produs
@@ -83,16 +83,15 @@
 									"<td class=\"main_table_data\">" + "C" + ((result.getInt("revenue") - result.getInt("spendings")) * 0.2) + "</td>" + //Impozit
 
 									"<td class=\"main_table_data\">" +
-									"<input type=\"submit\" value=\"Sterge\"/>" +
-									"<input type=\"hidden\" value=\"" + result.getString("id") +"\" name=\"id_delete\"/>" +
-									"<input type=\"hidden\" value=\"" + result.getString("type") +"\" name=\"type_delete\"/>" +
+										"<input type=\"submit\" value=\"Sterge\"/>" +
+										"<input type=\"hidden\" value=\"" + result.getString("id") +"\" name=\"id_delete\"/>" +
+										"<input type=\"hidden\" value=\"" + result.getString("type") +"\" name=\"type_delete\"/>" +
 									"</td>" +
-
 								"</form>"+
-								"</tr>");
-					} catch (SQLException e) {
-						throw new RuntimeException(e);
+							"</tr>");
 					}
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
 				}
 			%>
 
@@ -119,9 +118,9 @@
 				<select name="customer" id="customer">
 					<%
 						try {
-							sql = Files.readString(Paths.get(credentials.pathToSQL + "/customers.sql"));
-							statement = connection.createStatement();
-							result = statement.executeQuery(sql);
+							String sql = Files.readString(Paths.get(credentials.pathToSQL + "/customers.sql"));
+							Statement statement = connection.createStatement();
+							ResultSet result = statement.executeQuery(sql);
 
 							while (result.next()) {
 								String option = result.getString("surname") + " " + result.getString("name");
@@ -139,9 +138,9 @@
 				<select name="supplier" id="supplier">
 					<%
 						try {
-							sql = Files.readString(Paths.get(credentials.pathToSQL + "/suppliers.sql"));
-							statement = connection.createStatement();
-							result = statement.executeQuery(sql);
+							String sql = Files.readString(Paths.get(credentials.pathToSQL + "/suppliers.sql"));
+							Statement statement = connection.createStatement();
+							ResultSet result = statement.executeQuery(sql);
 
 							while (result.next()) {
 								String option = result.getString("name");
@@ -159,9 +158,9 @@
 			<select name="product" id="product">
 				<%
 					try {
-						sql = Files.readString(Paths.get(credentials.pathToSQL + "/products.sql"));
-						statement = connection.createStatement();
-						result = statement.executeQuery(sql);
+						String sql = Files.readString(Paths.get(credentials.pathToSQL + "/products.sql"));
+						Statement statement = connection.createStatement();
+						ResultSet result = statement.executeQuery(sql);
 
 						while (result.next()) {
 							String option = result.getString("name");
@@ -186,9 +185,9 @@
 			<select name="um" id="um">
 				<%
 					try {
-						sql = Files.readString(Paths.get(credentials.pathToSQL + "/units_of_measure.sql"));
-						statement = connection.createStatement();
-						result = statement.executeQuery(sql);
+						String sql = Files.readString(Paths.get(credentials.pathToSQL + "/units_of_measure.sql"));
+						Statement statement = connection.createStatement();
+						ResultSet result = statement.executeQuery(sql);
 
 						while (result.next()) {
 							String option = result.getString("name");
