@@ -12,7 +12,7 @@ public class Credentials {
         public static String pathToSQL;
 
         public Credentials() throws IOException {
-            List<String> lines = Files.readAllLines(Path.of("D:", "credentials"));
+            List<String> lines = Files.readAllLines(Path.of(System.getProperty("user.home"), "invoice_credentials"));
             dbUsername = lines.get(0);
             dbPassword = lines.get(1);
             dbURL = lines.get(2);
