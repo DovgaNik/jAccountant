@@ -7,13 +7,14 @@ import java.sql.SQLException;
 
 public abstract class ConnectionProvider {
 
-    public static Connection getConnection() throws ClassNotFoundException, SQLException, IOException {
-        Credentials credentials = new Credentials();
-        String url = Credentials.dbURL;
-        String username = Credentials.dbUsername;
-        String password = Credentials.dbPassword;
+	private static final String SQL_DRIVER = "com.mysql.cj.jdbc.Driver";
+	public static Connection getConnection() throws ClassNotFoundException, SQLException, IOException {
+		Credentials credentials = new Credentials();
+		String url = Credentials.dbURL;
+		String username = Credentials.dbUsername;
+		String password = Credentials.dbPassword;
 
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(url, username, password);
-    }
+		Class.forName(SQL_DRIVER);
+		return DriverManager.getConnection(url, username, password);
+	}
 }

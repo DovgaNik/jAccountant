@@ -11,86 +11,86 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntryAddServlet extends HttpServlet {
-    protected void addEntry(HttpServletRequest request, HttpServletResponse response, String nameOfTable, String[] columns, String[] parameters, String redirect) {
-        try {
-            Connection connection = ConnectionProvider.getConnection();
-            PreparedStatement preparedStmt = buildStatement(connection, request, nameOfTable, columns, parameters);
+	protected void addEntry(HttpServletRequest request, HttpServletResponse response, String nameOfTable, String[] columns, String[] parameters, String redirect) {
+		try {
+			Connection connection = ConnectionProvider.getConnection();
+			PreparedStatement preparedStmt = buildStatement(connection, request, nameOfTable, columns, parameters);
 
-            preparedStmt.execute();
-            connection.close();
-            response.sendRedirect(redirect);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
+			preparedStmt.execute();
+			connection.close();
+			response.sendRedirect(redirect);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
-    private PreparedStatement buildStatement(Connection connection, HttpServletRequest request, String tableName, String[] columns, String[] parameters) throws Exception {
+	private PreparedStatement buildStatement(Connection connection, HttpServletRequest request, String tableName, String[] columns, String[] parameters) throws Exception {
 
-        if (columns.length != parameters.length) {
-            throw new Exception("Amount of columns and values doesn't match");
-        }
-        StringBuilder sql = new StringBuilder("INSERT INTO " + tableName + " (");
+		if (columns.length != parameters.length) {
+			throw new Exception("Amount of columns and values doesn't match");
+		}
+		StringBuilder sql = new StringBuilder("INSERT INTO " + tableName + " (");
 
-        for (int i = 0; i < columns.length - 1; i++) {
-            sql.append(columns[i]).append(", ");
-        }
+		for (int i = 0; i < columns.length - 1; i++) {
+			sql.append(columns[i]).append(", ");
+		}
 
-        sql.append(columns[columns.length - 1]).append(") VALUES (");
+		sql.append(columns[columns.length - 1]).append(") VALUES (");
 
-        for (int i = 0; i < parameters.length - 1; i++) {
-            sql.append("?, ");
-        }
+		for (int i = 0; i < parameters.length - 1; i++) {
+			sql.append("?, ");
+		}
 
-        sql.append(" ?)");
+		sql.append(" ?)");
 
-        PreparedStatement preparedStmt = connection.prepareStatement(sql.toString());
+		PreparedStatement preparedStmt = connection.prepareStatement(sql.toString());
 
-        List<String> values = buildArrayOfParameters(request, parameters);
-        for(int i = 0; i < values.size(); i++){
+		List<String> values = buildArrayOfParameters(request, parameters);
+		for(int i = 0; i < values.size(); i++){
 
-            preparedStmt.setString(i + 1, values.get(i));
+			preparedStmt.setString(i + 1, values.get(i));
 
-        }
+		}
 
-        return preparedStmt;
-    }
+		return preparedStmt;
+	}
 
-    protected PreparedStatement buildStatement(Connection connection, HttpServletRequest request, String tableName, String[] columns, List<String> values) throws Exception {
+	protected PreparedStatement buildStatement(Connection connection, HttpServletRequest request, String tableName, String[] columns, List<String> values) throws Exception {
 
-        if (columns.length != values.size()) {
-            throw new Exception("Amount of columns and values doesn't match");
-        }
-        StringBuilder sql = new StringBuilder("INSERT INTO " + tableName + " (");
+		if (columns.length != values.size()) {
+			throw new Exception("Amount of columns and values doesn't match");
+		}
+		StringBuilder sql = new StringBuilder("INSERT INTO " + tableName + " (");
 
-        for (int i = 0; i < columns.length - 1; i++) {
-            sql.append(columns[i]).append(", ");
-        }
+		for (int i = 0; i < columns.length - 1; i++) {
+			sql.append(columns[i]).append(", ");
+		}
 
-        sql.append(columns[columns.length - 1]).append(") VALUES (");
+		sql.append(columns[columns.length - 1]).append(") VALUES (");
 
-        for (int i = 0; i < values.size() - 1; i++) {
-            sql.append("?, ");
-        }
+		for (int i = 0; i < values.size() - 1; i++) {
+			sql.append("?, ");
+		}
 
-        sql.append(" ?)");
+		sql.append(" ?)");
 
-        PreparedStatement preparedStmt = connection.prepareStatement(sql.toString());
+		PreparedStatement preparedStmt = connection.prepareStatement(sql.toString());
 
-        for(int i = 0; i < values.size(); i++){
+		for(int i = 0; i < values.size(); i++){
 
-            preparedStmt.setString(i + 1, values.get(i));
+			preparedStmt.setString(i + 1, values.get(i));
 
-        }
+		}
 
-        return preparedStmt;
-    }
+		return preparedStmt;
+	}
 
-    protected List<String> buildArrayOfParameters(HttpServletRequest request, String[] parameters) {
-        List<String> values = new ArrayList<>();
+	protected List<String> buildArrayOfParameters(HttpServletRequest request, String[] parameters) {
+		List<String> values = new ArrayList<>();
 
-        for (String parameter : parameters) {
-            values.add(request.getParameter(parameter));
-        }
-        return values;
-    }
+		for (String parameter : parameters) {
+			values.add(request.getParameter(parameter));
+		}
+		return values;
+	}
 }

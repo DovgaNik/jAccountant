@@ -12,18 +12,18 @@ import java.sql.PreparedStatement;
 
 public class EntryDeleteServlet extends HttpServlet {
 
-    protected void deleteEntry(HttpServletRequest request, HttpServletResponse response, String nameOfTable, String nameOfColumn, String parameter, String redirect) throws IOException {
-        PrintWriter out = response.getWriter();
-        try {
-            Connection connection = ConnectionProvider.getConnection();
-            String sql = "DELETE FROM " + nameOfTable + " WHERE " + nameOfColumn + " = ?";
-            PreparedStatement preparedStmt = connection.prepareStatement(sql);
-            preparedStmt.setString(1, request.getParameter(parameter));
-            preparedStmt.execute();
-            connection.close();
-            response.sendRedirect(redirect);
-        } catch (Exception e) {
-            out.println(e.getMessage());
-        }
-    }
+	protected void deleteEntry(HttpServletRequest request, HttpServletResponse response, String nameOfTable, String nameOfColumn, String parameter, String redirect) throws IOException {
+		PrintWriter out = response.getWriter();
+		try {
+			Connection connection = ConnectionProvider.getConnection();
+			String sql = "DELETE FROM " + nameOfTable + " WHERE " + nameOfColumn + " = ?";
+			PreparedStatement preparedStmt = connection.prepareStatement(sql);
+			preparedStmt.setString(1, request.getParameter(parameter));
+			preparedStmt.execute();
+			connection.close();
+			response.sendRedirect(redirect);
+		} catch (Exception e) {
+			out.println(e.getMessage());
+		}
+	}
 }

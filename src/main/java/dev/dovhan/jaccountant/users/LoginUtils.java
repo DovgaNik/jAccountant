@@ -13,45 +13,45 @@ import java.util.Objects;
 
 public abstract class LoginUtils {
 
-    public static final String ALGORITHM = "SHA-512";
+	public static final String ALGORITHM = "SHA-512";
 
-    private static String generateHash(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance(ALGORITHM);
-            byte[] messageDigest = md.digest(password.getBytes());
-            BigInteger no = new BigInteger(1, messageDigest);
-            String hashtext = no.toString(16);
-            while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
-            }
-            return hashtext;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
+	private static String generateHash(String password) {
+		try {
+			MessageDigest md = MessageDigest.getInstance(ALGORITHM);
+			byte[] messageDigest = md.digest(password.getBytes());
+			BigInteger no = new BigInteger(1, messageDigest);
+			String hashtext = no.toString(16);
+			while (hashtext.length() < 32) {
+				hashtext = "0" + hashtext;
+			}
+			return hashtext;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
 
-    public static void register(String user, String password) throws SQLException, IOException, ClassNotFoundException {
-        Connection connection = ConnectionProvider.getConnection();
-        String sql = "insert into users (username, password_hash) values (?, ?)";
-        PreparedStatement preparedStmt = connection.prepareStatement(sql);
-        preparedStmt.setString (1, user);
-        preparedStmt.setString (2, generateHash(password));
-        preparedStmt.execute();
-        connection.close();
-    }
+	public static void register(String user, String password) throws SQLException, IOException, ClassNotFoundException {
+		Connection connection = ConnectionProvider.getConnection();
+		String sql = "insert into users (username, password_hash) values (?, ?)";
+		PreparedStatement preparedStmt = connection.prepareStatement(sql);
+		preparedStmt.setString (1, user);
+		preparedStmt.setString (2, generateHash(password));
+		preparedStmt.execute();
+		connection.close();
+	}
 
-    public static boolean login (String user, String password) throws SQLException, IOException, ClassNotFoundException {
-        Connection connection = ConnectionProvider.getConnection();
-        String sql = "select * from users where username = " + "'" + user + "'";
-        PreparedStatement preparedStmt = connection.prepareStatement(sql);
-        ResultSet result = preparedStmt.executeQuery();
-        if (result.next()) {
-            boolean isVerified = Objects.equals(result.getString("password_hash"), generateHash(password));
-            connection.close();
-            return isVerified;
-        }
-        connection.close();
-        return false;
-    }
+	public static boolean login (String user, String password) throws SQLException, IOException, ClassNotFoundException {
+		Connection connection = ConnectionProvider.getConnection();
+		String sql = "select * from users where username = " + "'" + user + "'";
+		PreparedStatement preparedStmt = connection.prepareStatement(sql);
+		ResultSet result = preparedStmt.executeQuery();
+		if (result.next()) {
+			boolean isVerified = Objects.equals(result.getString("password_hash"), generateHash(password));
+			connection.close();
+			return isVerified;
+		}
+		connection.close();
+		return false;
+	}
 }
