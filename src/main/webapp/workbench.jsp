@@ -3,6 +3,7 @@
 <%@ page import="java.nio.file.Files" %>
 <%@ page import="java.nio.file.Paths" %>
 <%@ page import="dev.dovhan.jaccountant.utilities.Credentials" %>
+<%@ page import="java.util.Objects" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
@@ -43,6 +44,7 @@
 	<div class="main_table_container">
 		<table class="main_table">
 			<tr class="main_table_header_row">
+				<th class="main_table_header">ID</th>
 				<th class="main_table_header">Data</th>
 				<th class="main_table_header">Furnizor/Persoana</th>
 				<th class="main_table_header">Produs</th>
@@ -70,14 +72,15 @@
 						out.println(
 							"<tr class=\"main_table_data_row\">" +
 								"<form method=\"POST\" action=\"deleteInvoice\">" +
+									"<td class=\"main_table_data\">" + invoiceID + (Objects.equals(type, "customer")?"C":"S") + "</td>" +
 									"<td class=\"main_table_data\">" + result.getDate("date") + "</td>" + //Data
 									"<td class=\"main_table_data\">" + result.getString("name") + "</td>" + //Furnizor/Persoana
 									"<td class=\"main_table_data\"></td>" + //Produs
 									"<td class=\"main_table_data\"></td>" + //caen
 									"<td class=\"main_table_data\"></td>" + //Cantitate
 									"<td class=\"main_table_data\"></td>" + //UM
-									"<td class=\"main_table_data\">" + result.getInt("price") + "</td>" + //Cheltuieli
-									"<td class=\"main_table_data\">" + result.getInt("price") + "</td>" + //Venituri
+									"<td class=\"main_table_data\"></td>" + //Cheltuieli
+									"<td class=\"main_table_data\"></td>" + //Venituri
 									"<td class=\"main_table_data\"></td>" + //Note
 									"<td class=\"main_table_data\"></td>" + //Deductibil
 									"<td class=\"main_table_data\"></td>" + //Profit
@@ -93,7 +96,7 @@
 							"</tr>");
 
 						String transactionSQL;
-						if (type == "customer") {
+						if (Objects.equals(type, "customer")) {
 							transactionSQL = Files.readString(Paths.get(credentials.pathToSQL, "workbench", "customer_transaction.sql"));
 						} else {
 							transactionSQL = Files.readString(Paths.get(credentials.pathToSQL, "workbench", "supplier_transaction.sql"));
@@ -105,6 +108,7 @@
 							out.println(
 								"<tr class=\"main_table_data_row\">" +
 									"<form method=\"POST\" action=\"deleteInvoice\">" +
+										"<td class=\"main_table_data\"></td>" +
 										"<td class=\"main_table_data\">" + transaction.getDate("date") + "</td>" + //Data
 										"<td class=\"main_table_data\"></td>" + //Furnizor/Persoana
 										"<td class=\"main_table_data\">" + transaction.getString("product") + "</td>" + //Produs
@@ -122,7 +126,7 @@
 										"<td class=\"main_table_data\">" +
 											"<input type=\"submit\" value=\"Sterge\"/>" +
 											"<input type=\"hidden\" value=\"" + transaction.getString("id") +"\" name=\"id_delete\"/>" +
-											//"<input type=\"hidden\" value=\"" + transaction.getString("type") +"\" name=\"type_delete\"/>" +
+											"<input type=\"hidden\" value=\"" + type +"\" name=\"type_delete\"/>" +
 										"</td>" +
 									"</form>"+
 								"</tr>");
@@ -138,8 +142,8 @@
 	</div>
 
 	<div class="sidebar">
-		<h1>Add entry</h1>
 		<form method="POST" action="addInvoice" name="add_form" class="add_form">
+			<h1>Add Invoice</h1>
 			<span>Type of invoice:</span><br>
 			<label for="customer_radio">Customer</label>
 			<input type="radio" id="customer_radio" name="type_of_invoice" value="customer" onclick="switchType(this)"><br>
@@ -191,6 +195,31 @@
 					%>
 				</select> <br>
 			</div>
+			<input type="reset" value="Reset">
+			<input type="button" value="Submit" onclick="validateAndSubmit()"/> <br>
+			<span id="output"></span>
+		</form>
+
+		<form method="POST" action="addTransaction" name="add_transaction" class="add_form">
+			<h1>Add transaction</h1>
+
+			<label for="product">Factura: </label>
+			<select name="invoice" id="invoice">
+				<%
+					try {
+						String sql = Files.readString(Paths.get(credentials.pathToSQL, "workbench", "invoice_dropdown.sql"));
+						Statement statement = connection.createStatement();
+						ResultSet result = statement.executeQuery(sql);
+
+						while (result.next()) {
+							String option = result.getString("id");
+							out.println("<option value=\""  + option + "\">" + option + "</option>");
+						}
+					} catch (Exception e) {
+						out.println(e.getMessage());
+					}
+				%>
+			</select> <br>
 
 
 			<label for="product">Produs: </label>
@@ -266,11 +295,12 @@
 			<label for="impozit">Impozit: </label>
 			<input type="number" name="impozit" id="impozit"/> <br>
 
-
+			<input type="hidden">
 			<input type="reset" value="Reset">
-			<input type="button" value="Submit" onclick="validateAndSubmit()"/> <br>
-			<span id="output"></span>
+			<input type="button" value="Submit" onclick="submitTransaction()"/> <br>
+			<span id="output_transaction"></span>
 		</form>
+
 	</div>
 </div>
 </body>
