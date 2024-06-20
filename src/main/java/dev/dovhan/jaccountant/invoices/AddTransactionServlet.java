@@ -23,9 +23,7 @@ public class AddTransactionServlet extends HttpServlet {
 			Connection connection = ConnectionProvider.getConnection();
 			PreparedStatement statement;
 
-			int entity_id;
-			String type = "";
-			String idColumn;
+			String type;
 			String invoiceNum = request.getParameter("invoice");
 			int digitPart = Integer.parseInt(invoiceNum.substring(0, invoiceNum.length() - 1));
 			String letterPart = invoiceNum.substring(invoiceNum.length() - 1);
@@ -50,21 +48,11 @@ public class AddTransactionServlet extends HttpServlet {
 			String caen = request.getParameter("caen");
 			float quantity = Float.parseFloat(request.getParameter("quantity"));
 			int um = DBActions.getIDByFK(connection, "unit_of_measure", "name", request.getParameter("um"));
-			//float spendings = Float.parseFloat(request.getParameter("cheltuieli"));
-			//float revenue = Float.parseFloat(request.getParameter("venituri"));
 			String note = request.getParameter("note");
 			float deductible = Float.parseFloat(request.getParameter("deductibil"));
-			//float profit = Float.parseFloat(request.getParameter("profit"));
 			float taxable = Float.parseFloat(request.getParameter("impozabil"));
-			//float tax = Float.parseFloat(request.getParameter("impozit"));
-
 
 			int invoiceID = digitPart;
-//			try (ResultSet result = statement.getGeneratedKeys()) {
-//				if (result.next()) {
-//					invoiceID = result.getInt(1);
-//				}
-//			}
 
 			statement = connection.prepareStatement("INSERT INTO " + type + "_transaction" + " (sale_date, product_id, caen, quantity, unit_of_measure_id, price, notes, deductible, taxable, invoice_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			statement.setString(1, invoice_date);

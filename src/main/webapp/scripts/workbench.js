@@ -17,17 +17,6 @@ function validateAndSubmit(){
 	let date = document.getElementById("date");
 	let supplier = document.getElementById("supplier");
 	let person = document.getElementById("customer");
-	let product = document.getElementById("product");
-	let caen = document.getElementById("caen");
-	let cantitate = document.getElementById("quantity");
-	let unit_of_measure = document.getElementById("um");
-	let spendings = document.getElementById("cheltuieli");
-	let incomings = document.getElementById("venituri");
-	let note = document.getElementById("note");
-	let deductible = document.getElementById("deductibil");
-	let profit = document.getElementById("profit");
-	let taxable = document.getElementById("impozabil");
-	let tax = document.getElementById("impozit");
 
 	if ((type_customer.checked || type_supplier.checked) && date.value && (supplier.value || person.value)) {
 		document.add_form.submit();
@@ -45,11 +34,6 @@ function submitTransaction() {
 	let unit_of_measure = document.getElementById("um");
 	let spendings = document.getElementById("cheltuieli");
 	let incomings = document.getElementById("venituri");
-	let note = document.getElementById("note");
-	let deductible = document.getElementById("deductibil");
-	let profit = document.getElementById("profit");
-	let taxable = document.getElementById("impozabil");
-	let tax = document.getElementById("impozit");
 
 	if (factura.value && product.value && caen.value && cantitate.value && unit_of_measure.value && (spendings.value || incomings.value)) {
 		document.add_transaction.submit();

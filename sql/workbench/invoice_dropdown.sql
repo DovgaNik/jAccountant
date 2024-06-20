@@ -5,4 +5,4 @@ FROM
 UNION ALL
 SELECT
     CONCAT(id, 'S')
-FROM customerinvoice
+FROM supplierinvoice
