@@ -28,37 +28,37 @@
 
 <html>
 <head>
-	<title>Roles</title>
-	<link href="styles/role.css" rel="stylesheet" type="text/css">
+	<title>Categories</title>
+	<link href="styles/category.css" rel="stylesheet" type="text/css">
 	<link rel="icon" href="favicon.ico" />
-	<script src="scripts/role.js"></script>
+	<script src="scripts/category.js"></script>
 </head>
 <body>
 <div class="header">
 
-	<h1>Roles</h1>
+	<h1>Categories</h1>
 
 </div>
 <div class="flex_container">
 	<div class="main_table_container">
 		<table class="main_table">
 			<tr class="main_table_header_row">
-				<th class="main_table_header">Role type</th>
+				<th class="main_table_header">Category type</th>
 				<th class="main_table_header">Sterge</th>
 			</tr>
 			<%
 				try {
 
 					Statement statement = connection.createStatement();
-					ResultSet result = statement.executeQuery("SELECT type FROM roles");
+					ResultSet result = statement.executeQuery("SELECT name FROM category");
 					while (result.next()) {
 						out.println(
 								"<tr>" +
-										"<form method=\"POST\" action=\"deleteRole\" name=\"deleteRole\" class=\"deleteRole\">" +
-											"<td class=\"main_table_data\">" + result.getString("type") + "</td>" +
+										"<form method=\"POST\" action=\"deleteCategory\" name=\"deleteCategory\" class=\"deleteCategory\">" +
+											"<td class=\"main_table_data\">" + result.getString("name") + "</td>" +
 											"<td class=\"main_table_data\">" +
 												"<input type=\"submit\" value=\"Sterge\"/>" +
-												"<input type=\"hidden\" value=\"" + result.getString("type") + "\" name=\"role_to_delete\"/>" +
+												"<input type=\"hidden\" value=\"" + result.getString("name") + "\" name=\"category_to_delete\"/>" +
 											"</td>" +
 										"</form>" +
 								"</tr>");
@@ -74,11 +74,11 @@
 	</div>
 
 	<div class="sidebar">
-		<form method="POST" action="addRole" name="add_form" class="add_form">
-			<h1>Add role</h1>
+		<form method="POST" action="addCategory" name="add_form" class="add_form">
+			<h1>Add category</h1>
 
-			<label for="type">Role: </label>
-			<input type="text" name="type" id="type"/> <br>
+			<label for="category">Role: </label>
+			<input type="text" name="category" id="category"/> <br>
 
 			<input type="reset" value="Reset">
 			<input type="button" value="Submit" onclick="validateAndSubmit()"/> <br>
