@@ -39,6 +39,7 @@
 
 	<h1>Contabilitate</h1>
 	<a href="gender.jsp">Genders</a>
+	<a href="role.jsp">Roles</a>
 
 </div>
 <div class="flex_container">
