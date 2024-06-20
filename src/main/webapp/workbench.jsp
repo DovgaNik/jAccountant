@@ -107,7 +107,7 @@
 						while (transaction.next()){
 							out.println(
 								"<tr class=\"main_table_data_row\">" +
-									"<form method=\"POST\" action=\"deleteInvoice\">" +
+									"<form method=\"POST\" action=\"deleteTransaction\">" +
 										"<td class=\"main_table_data\"></td>" +
 										"<td class=\"main_table_data\">" + transaction.getDate("date") + "</td>" + //Data
 										"<td class=\"main_table_data\"></td>" + //Furnizor/Persoana
