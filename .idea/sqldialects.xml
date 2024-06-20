@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/sql/category_dropdown.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/cities.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/customers.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/invoice_app.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/products.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/products_page.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/suppliers.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/units_of_measure.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/workbench/customer_transaction.sql" dialect="MySQL" />
