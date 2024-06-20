@@ -27,11 +27,13 @@ public class AddTransactionServlet extends HttpServlet {
 			String invoiceNum = request.getParameter("invoice");
 			int digitPart = Integer.parseInt(invoiceNum.substring(0, invoiceNum.length() - 1));
 			String letterPart = invoiceNum.substring(invoiceNum.length() - 1);
-
+			float price = 0;
 			if (Objects.equals(letterPart, "C")){
 				type = "customer";
+				price = Float.parseFloat(request.getParameter("venituri"));
 			} else {
 				type = "supplier";
+				price = Float.parseFloat(request.getParameter("cheltuieli"));
 			}
 
 			String sql = "SELECT invoice_date FROM " + type + "invoice WHERE id = ?";
@@ -43,7 +45,6 @@ public class AddTransactionServlet extends HttpServlet {
 			dateRes.next();
 
 			String invoice_date = dateRes.getString("invoice_date");
-			float price = Float.parseFloat(request.getParameter("cheltuieli"));
 			int product_id = DBActions.getIDByFK(connection, "products", "name", request.getParameter("product"));
 			String caen = request.getParameter("caen");
 			float quantity = Float.parseFloat(request.getParameter("quantity"));

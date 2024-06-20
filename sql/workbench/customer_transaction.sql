@@ -7,7 +7,7 @@ SELECT
     invoice_app.customer_transaction.quantity AS quantity,
     invoice_app.unit_of_measure.short AS um,
     NULL AS spendings,
-    invoice_app.customerinvoice.price AS revenue,
+    invoice_app.customer_transaction.price AS revenue,
     invoice_app.customer_transaction.notes AS notes,
     invoice_app.customer_transaction.deductible AS deductible,
     invoice_app.customer_transaction.taxable AS taxable
