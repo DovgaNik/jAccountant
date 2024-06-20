@@ -59,39 +59,78 @@
 				<th class="main_table_header">Sterge</th>
 			</tr>
 			<%
+				//Data 	Furnizor/Persoana 	Produs 	caen 	Cantitate 	UM 	Cheltuieli 	Venituri 	Note 	Deductibil 	Profit 	Impozabil 	Impozit
 				try {
-					String sql = Files.readString(Paths.get(credentials.pathToSQL + "/workbench_request.sql"));
+					String sql = Files.readString(Paths.get(credentials.pathToSQL, "workbench", "invoice.sql"));
 					Statement statement = connection.createStatement();
 					ResultSet result = statement.executeQuery(sql);
 					while (result.next()) {
+						String type = result.getString("type");
+						int invoiceID = result.getInt("id");
 						out.println(
-							//Data 	Furnizor/Persoana 	Produs 	caen 	Cantitate 	UM 	Cheltuieli 	Venituri 	Note 	Deductibil 	Profit 	Impozabil 	Impozit
 							"<tr class=\"main_table_data_row\">" +
 								"<form method=\"POST\" action=\"deleteInvoice\">" +
 									"<td class=\"main_table_data\">" + result.getDate("date") + "</td>" + //Data
 									"<td class=\"main_table_data\">" + result.getString("name") + "</td>" + //Furnizor/Persoana
-									"<td class=\"main_table_data\">" + result.getString("product") + "</td>" + //Produs
-									"<td class=\"main_table_data\">" + result.getString("caen") + "</td>" + //caen
-									"<td class=\"main_table_data\">" + result.getInt("quantity") + "</td>" + //Cantitate
-									"<td class=\"main_table_data\">" + result.getString("um") + "</td>" + //UM
-									"<td class=\"main_table_data\">" + result.getInt("spendings") + "</td>" + //Cheltuieli
-									"<td class=\"main_table_data\">" + result.getInt("revenue") + "</td>" + //Venituri
-									"<td class=\"main_table_data\">" + result.getString("notes") + "</td>" + //Note
-									"<td class=\"main_table_data\">" + result.getString("deductible") + "</td>" + //Deductibil
-									"<td class=\"main_table_data\">" + "C" + (result.getInt("revenue") - result.getInt("spendings")) + "</td>" + //Profit
-									"<td class=\"main_table_data\">" + result.getString("taxable") + "</td>" + //Impozabil
-									"<td class=\"main_table_data\">" + "C" + ((result.getInt("revenue") - result.getInt("spendings")) * 0.2) + "</td>" + //Impozit
+									"<td class=\"main_table_data\"></td>" + //Produs
+									"<td class=\"main_table_data\"></td>" + //caen
+									"<td class=\"main_table_data\"></td>" + //Cantitate
+									"<td class=\"main_table_data\"></td>" + //UM
+									"<td class=\"main_table_data\">" + result.getInt("price") + "</td>" + //Cheltuieli
+									"<td class=\"main_table_data\">" + result.getInt("price") + "</td>" + //Venituri
+									"<td class=\"main_table_data\"></td>" + //Note
+									"<td class=\"main_table_data\"></td>" + //Deductibil
+									"<td class=\"main_table_data\"></td>" + //Profit
+									"<td class=\"main_table_data\"></td>" + //Impozabil
+									"<td class=\"main_table_data\"></td>" + //Impozit
 
 									"<td class=\"main_table_data\">" +
 										"<input type=\"submit\" value=\"Sterge\"/>" +
 										"<input type=\"hidden\" value=\"" + result.getString("id") +"\" name=\"id_delete\"/>" +
-										"<input type=\"hidden\" value=\"" + result.getString("type") +"\" name=\"type_delete\"/>" +
+										"<input type=\"hidden\" value=\"" + type +"\" name=\"type_delete\"/>" +
 									"</td>" +
 								"</form>"+
 							"</tr>");
+
+						String transactionSQL;
+						if (type == "customer") {
+							transactionSQL = Files.readString(Paths.get(credentials.pathToSQL, "workbench", "customer_transaction.sql"));
+						} else {
+							transactionSQL = Files.readString(Paths.get(credentials.pathToSQL, "workbench", "supplier_transaction.sql"));
+						}
+						PreparedStatement transactionStatement = connection.prepareStatement(transactionSQL);
+						transactionStatement.setInt(1, invoiceID);
+						ResultSet transaction = transactionStatement.executeQuery();
+						while (transaction.next()){
+							out.println(
+								"<tr class=\"main_table_data_row\">" +
+									"<form method=\"POST\" action=\"deleteInvoice\">" +
+										"<td class=\"main_table_data\">" + transaction.getDate("date") + "</td>" + //Data
+										"<td class=\"main_table_data\"></td>" + //Furnizor/Persoana
+										"<td class=\"main_table_data\">" + transaction.getString("product") + "</td>" + //Produs
+										"<td class=\"main_table_data\">" + transaction.getString("caen") + "</td>" + //caen
+										"<td class=\"main_table_data\">" + transaction.getInt("quantity") + "</td>" + //Cantitate
+										"<td class=\"main_table_data\">" + transaction.getString("um") + "</td>" + //UM
+										"<td class=\"main_table_data\">" + transaction.getInt("spendings") + "</td>" + //Cheltuieli
+										"<td class=\"main_table_data\">" + transaction.getInt("revenue") + "</td>" + //Venituri
+										"<td class=\"main_table_data\">" + transaction.getString("notes") + "</td>" + //Note
+										"<td class=\"main_table_data\">" + transaction.getString("deductible") + "</td>" + //Deductibil
+										"<td class=\"main_table_data\">" + "C" + (transaction.getInt("revenue") - transaction.getInt("spendings")) + "</td>" + //Profit
+										"<td class=\"main_table_data\">" + transaction.getString("taxable") + "</td>" + //Impozabil
+										"<td class=\"main_table_data\">" + "C" + ((transaction.getInt("revenue") - transaction.getInt("spendings")) * 0.2) + "</td>" + //Impozit
+
+										"<td class=\"main_table_data\">" +
+											"<input type=\"submit\" value=\"Sterge\"/>" +
+											"<input type=\"hidden\" value=\"" + transaction.getString("id") +"\" name=\"id_delete\"/>" +
+											//"<input type=\"hidden\" value=\"" + transaction.getString("type") +"\" name=\"type_delete\"/>" +
+										"</td>" +
+									"</form>"+
+								"</tr>");
+						}
 					}
 				} catch (SQLException e) {
-					throw new RuntimeException(e);
+					System.out.println(e.getSQLState());
+					System.out.println(e.getMessage());
 				}
 			%>
 
