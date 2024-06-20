@@ -82,7 +82,7 @@
 
 	<div class="sidebar">
 		<form method="POST" action="addProduct" name="add_form" class="add_form">
-			<h1>Add gender</h1>
+			<h1>Add product</h1>
 
 			<label for="name">Name: </label>
 			<input type="text" name="name" id="name"/> <br>

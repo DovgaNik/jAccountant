@@ -42,6 +42,7 @@
 	<a href="role.jsp">Roles</a>
 	<a href="category.jsp">Category</a>
 	<a href="atutype.jsp">ATU Type</a>
+	<a href="products.jsp">Produse</a>
 
 </div>
 <div class="flex_container">

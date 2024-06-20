@@ -77,7 +77,7 @@
 		<form method="POST" action="addCategory" name="add_form" class="add_form">
 			<h1>Add category</h1>
 
-			<label for="category">Role: </label>
+			<label for="category">Category: </label>
 			<input type="text" name="category" id="category"/> <br>
 
 			<input type="reset" value="Reset">
